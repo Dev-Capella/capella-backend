@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Domain.Enums;
 
 namespace Persistence.Services
 {
@@ -61,7 +62,9 @@ namespace Persistence.Services
             banner.Text = bannerDto.Text;
             banner.Link = bannerDto.Link;
             banner.Active = bannerDto.Active;
-            var gallery = await _mediaService.SaveGalleryForBinary(bannerDto.File, true);
+            banner.BannerType = bannerDto.BannerType;
+            var mediaType = GetMediaFormatTypeByBannerType(bannerDto.BannerType);
+            var gallery = await _mediaService.SaveGalleryForBinary(bannerDto.File, mediaType,true);
             banner.Gallery = gallery;
             await _bannerWriteRepository.AddAsync(banner);
         }
@@ -74,6 +77,8 @@ namespace Persistence.Services
             banner.Description = bannerDto.Description;
             banner.Text = bannerDto.Text;
             banner.Link = bannerDto.Link;
+            banner.BannerType = bannerDto.BannerType;
+            var mediaType = GetMediaFormatTypeByBannerType(bannerDto.BannerType);
             if (banner.Gallery == null)
             {
                 await _mediaService.DeleteGallery(banner.Gallery.Code);  
@@ -81,10 +86,26 @@ namespace Persistence.Services
 
             if (bannerDto.File != null)
             {
-                var gallery = await _mediaService.SaveGalleryForBinary(bannerDto.File, true);
+                var gallery = await _mediaService.SaveGalleryForBinary(bannerDto.File, mediaType,true);
                 banner.Gallery = gallery;  
             }
             await _bannerWriteRepository.UpdateAsync(banner, bannerDto.Id);
         }
+
+        private MediaFormatType GetMediaFormatTypeByBannerType(BannerType bannerType)
+        {
+            switch (bannerType)
+            {
+                case BannerType.TOP:
+                    return MediaFormatType.TOPBANNER;
+                case BannerType.CARD:
+                    return MediaFormatType.CARDBANNER;
+                case BannerType.CAROUSEL:
+                    return MediaFormatType.CAROUSELBANNER;
+                default:
+                    throw new NotSupportedException("Unsupported banner type");
+            }
+        }
+        
     }
 }

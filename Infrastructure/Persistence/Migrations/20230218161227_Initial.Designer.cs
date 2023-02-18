@@ -12,8 +12,8 @@ using Persistence.Contexts;
 namespace Persistence.Migrations
 {
     [DbContext(typeof(CapellaDbContext))]
-    [Migration("20230211142718_capella_1")]
-    partial class capella_1
+    [Migration("20230218161227_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -23,21 +23,6 @@ namespace Persistence.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
-
-            modelBuilder.Entity("BannerGallery", b =>
-                {
-                    b.Property<int>("BannersId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("GalleriesId")
-                        .HasColumnType("integer");
-
-                    b.HasKey("BannersId", "GalleriesId");
-
-                    b.HasIndex("GalleriesId");
-
-                    b.ToTable("BannersGalleries", (string)null);
-                });
 
             modelBuilder.Entity("CategoryProduct", b =>
                 {
@@ -170,6 +155,9 @@ namespace Persistence.Migrations
                     b.Property<bool>("Active")
                         .HasColumnType("boolean");
 
+                    b.Property<int>("BannerType")
+                        .HasColumnType("integer");
+
                     b.Property<string>("Code")
                         .IsRequired()
                         .HasColumnType("text");
@@ -180,6 +168,9 @@ namespace Persistence.Migrations
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("text");
+
+                    b.Property<int>("GalleryId")
+                        .HasColumnType("integer");
 
                     b.Property<DateTime>("LastModifiedDate")
                         .HasColumnType("timestamp with time zone");
@@ -197,6 +188,8 @@ namespace Persistence.Migrations
                         .HasColumnType("text");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("GalleryId");
 
                     b.ToTable("Banners");
                 });
@@ -486,7 +479,10 @@ namespace Persistence.Migrations
                     b.Property<DateTime>("LastModifiedDate")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<int>("MediaFormatId")
+                    b.Property<int?>("MediaFormatId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("MediaType")
                         .HasColumnType("integer");
 
                     b.Property<string>("Mime")
@@ -535,17 +531,20 @@ namespace Persistence.Migrations
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<int>("Height")
+                    b.Property<int?>("Height")
                         .HasColumnType("integer");
 
                     b.Property<DateTime>("LastModifiedDate")
                         .HasColumnType("timestamp with time zone");
 
+                    b.Property<int>("MediaFormatType")
+                        .HasColumnType("integer");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<int>("Width")
+                    b.Property<int?>("Width")
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
@@ -1141,21 +1140,6 @@ namespace Persistence.Migrations
                     b.ToTable("VariantValuesVariantItems", (string)null);
                 });
 
-            modelBuilder.Entity("BannerGallery", b =>
-                {
-                    b.HasOne("Domain.Entities.Banner", null)
-                        .WithMany()
-                        .HasForeignKey("BannersId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Domain.Entities.Gallery", null)
-                        .WithMany()
-                        .HasForeignKey("GalleriesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("CategoryProduct", b =>
                 {
                     b.HasOne("Domain.Entities.Category", null)
@@ -1227,6 +1211,17 @@ namespace Persistence.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("Domain.Entities.Banner", b =>
+                {
+                    b.HasOne("Domain.Entities.Gallery", "Gallery")
+                        .WithMany("Banners")
+                        .HasForeignKey("GalleryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Gallery");
+                });
+
             modelBuilder.Entity("Domain.Entities.Category", b =>
                 {
                     b.HasOne("Domain.Entities.Category", "ParentCategory")
@@ -1277,9 +1272,7 @@ namespace Persistence.Migrations
 
                     b.HasOne("Domain.Entities.MediaFormat", "MediaFormat")
                         .WithMany("Medias")
-                        .HasForeignKey("MediaFormatId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("MediaFormatId");
 
                     b.Navigation("MediaFormat");
                 });
@@ -1514,6 +1507,8 @@ namespace Persistence.Migrations
 
             modelBuilder.Entity("Domain.Entities.Gallery", b =>
                 {
+                    b.Navigation("Banners");
+
                     b.Navigation("Medias");
                 });
 

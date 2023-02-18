@@ -2,6 +2,7 @@
 using Application.Repositories;
 using Application.Services;
 using Domain.Entities;
+using Domain.Enums;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -156,7 +157,7 @@ namespace Persistence.Services
         }
 
 
-        public async Task<Gallery> SaveGalleryForBinary(FileDto fileDto, bool secure)
+        public async Task<Gallery> SaveGalleryForBinary(FileDto fileDto, MediaFormatType mediaFormatType, bool secure)
         {
             try
             {
@@ -172,52 +173,38 @@ namespace Persistence.Services
                 gallery.Code = Guid.NewGuid().ToString();
                 gallery.Name = fileDto.FileName;
 
-                var mediaFormats = await _mediaFormatReadRepository.GetAll().ToListAsync();
+                var mediaFormats = await _mediaFormatReadRepository
+                    .GetWhere(x => x.MediaFormatType==mediaFormatType).ToListAsync();
                 var medias = new HashSet<Media>();
                 foreach (var mediaFormat in mediaFormats)
                 {
                     var filenamehash = new string(Enumerable.Repeat(chars, 20).Select(s => s[random.Next(s.Length)]).ToArray());
                     var imageBytes = Convert.FromBase64String(fileDto.File);
-                    // Bu satırda, gelen resim verileri için bir MemoryStream nesnesi oluşturuluyor.
-                    // MemoryStream, bellekte saklanan verileri okuma ve yazma işlemleri yapmak için kullanılan bir sınıftır.
-                    // Kullanmamızdaki amaç da bu HIZ. Diskte değil bellekte.
-                    // Bu nedenle, gelen resim verileri için MemoryStream nesnesi kullanılıyor.
                     using (var stream = new MemoryStream(imageBytes))
                     {
-                        // 'stream' değişkeni içindeki okuma veya yazma pozisyonunu sıfıra eşitliyor.
-                        // Bu, dosya içeriğinin başından okunmasını veya yazılmasını sağlar.
-                        // Örneğin, 'image.Load(stream)' satırından önce pozisyon sıfır olmalıdır, aksi takdirde 'image.Load(stream)' metodu dosya içeriğinin belirli bir bölümünü yükleyebilir.
+
                         stream.Position = 0;
-                        //Bu satırda, resmin kaydedileceği dosya yolu oluşturuluyor.
-                        //"Path.Combine" metodu, verilen iki yolu birleştirir ve dosya adı oluşturulur.
+                      
                         var fileName = Path.Combine(fullPath, filenamehash + "-" + mediaFormat.Name+Path.GetExtension(fileDto.FileName));
-                        //Bu satırda, oluşturulan MemoryStream nesnesi kullanılarak resim yükleniyor.
-                        //ImageSharp kütüphanesi kullanılarak yapılıyor.
+                       
                         using (var image = Image.Load(stream))
                         {
                             if (mediaFormat.Code != "original")
                             {
-                                // Bu satırda, resmin yeniden boyutlandırılması için ResizeOptions nesnesi oluşturuluyor.
-                                // "Size" özelliği ile resmin yeni boyutları belirleniyor.
-                                // "Mode" özelliği ise, resmin nasıl boyutlandırılacağını belirler.
-                                // Bu örnekte "ResizeMode.Max" kullanılıyor, bu nedenle resim maksimum boyutta korunacak şekilde yeniden boyutlandırılacak.
+                               
                                 var options = new ResizeOptions
                                 {
                                     Size = new Size(mediaFormat.Height ?? 0, mediaFormat.Width ?? 0),
                                     Mode = ResizeMode.Max
                                 };
-                                // Bu satırda, resim yeniden boyutlandırılıyor.
-                                // "Mutate" metodu ile resim değiştiriliyor ve "Resize" metodu ile yeni boyutlar belirleniyor.
+                               
                                 image.Mutate(x => x.Resize(options));
-                                // Bu satır, dosya sisteminde yeniden boyutlandırılmış resmi kaydetmek için File sınıfının OpenWrite metodunu kullanıyor.
-                                // OpenWrite, verilen dosya yolunda dosyayı açar ve yazma işlemleri yapmak için döndürür.
+                               
                             }
 
                             using (var output = File.OpenWrite(fileName))
                             {
-                                // Bu satır, resmi dosyaya kaydeder.
-                                // Save metodu, verilen dosya yoluna ve kullanılacak olan kodlayıcıya göre resmi kaydeder.
-                                // GetEncoder metodu, verilen dosya yoluna göre uygun kodlayıcıyı döndürür.
+                               
                                 image.Save(output, GetEncoder(fileName));
                             }
                         }

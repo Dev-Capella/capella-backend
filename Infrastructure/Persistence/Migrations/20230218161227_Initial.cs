@@ -6,30 +6,10 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace Persistence.Migrations
 {
-    public partial class capella_1 : Migration
+    public partial class Initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.CreateTable(
-                name: "Banners",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Name = table.Column<string>(type: "text", nullable: false),
-                    Description = table.Column<string>(type: "text", nullable: false),
-                    Text = table.Column<string>(type: "text", nullable: false),
-                    Link = table.Column<string>(type: "text", nullable: false),
-                    Active = table.Column<bool>(type: "boolean", nullable: false),
-                    CreatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    LastModifiedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    Code = table.Column<string>(type: "text", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Banners", x => x.Id);
-                });
-
             migrationBuilder.CreateTable(
                 name: "Brands",
                 columns: table => new
@@ -126,8 +106,9 @@ namespace Persistence.Migrations
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Name = table.Column<string>(type: "text", nullable: false),
-                    Height = table.Column<int>(type: "integer", nullable: false),
-                    Width = table.Column<int>(type: "integer", nullable: false),
+                    Height = table.Column<int>(type: "integer", nullable: true),
+                    Width = table.Column<int>(type: "integer", nullable: true),
+                    MediaFormatType = table.Column<int>(type: "integer", nullable: false),
                     CreatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     LastModifiedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     Code = table.Column<string>(type: "text", nullable: false)
@@ -353,24 +334,28 @@ namespace Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "BannersGalleries",
+                name: "Banners",
                 columns: table => new
                 {
-                    BannersId = table.Column<int>(type: "integer", nullable: false),
-                    GalleriesId = table.Column<int>(type: "integer", nullable: false)
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Name = table.Column<string>(type: "text", nullable: false),
+                    Description = table.Column<string>(type: "text", nullable: false),
+                    Text = table.Column<string>(type: "text", nullable: false),
+                    Link = table.Column<string>(type: "text", nullable: false),
+                    Active = table.Column<bool>(type: "boolean", nullable: false),
+                    BannerType = table.Column<int>(type: "integer", nullable: false),
+                    GalleryId = table.Column<int>(type: "integer", nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    LastModifiedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    Code = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_BannersGalleries", x => new { x.BannersId, x.GalleriesId });
+                    table.PrimaryKey("PK_Banners", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_BannersGalleries_Banners_BannersId",
-                        column: x => x.BannersId,
-                        principalTable: "Banners",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_BannersGalleries_Gallery_GalleriesId",
-                        column: x => x.GalleriesId,
+                        name: "FK_Banners_Gallery_GalleryId",
+                        column: x => x.GalleryId,
                         principalTable: "Gallery",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -393,7 +378,8 @@ namespace Persistence.Migrations
                     Size = table.Column<long>(type: "bigint", nullable: false),
                     Secure = table.Column<bool>(type: "boolean", nullable: false),
                     Deleted = table.Column<bool>(type: "boolean", nullable: false),
-                    MediaFormatId = table.Column<int>(type: "integer", nullable: false),
+                    MediaType = table.Column<int>(type: "integer", nullable: false),
+                    MediaFormatId = table.Column<int>(type: "integer", nullable: true),
                     GalleryId = table.Column<int>(type: "integer", nullable: true),
                     CreatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     LastModifiedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
@@ -411,8 +397,7 @@ namespace Persistence.Migrations
                         name: "FK_Medias_MediaFormats_MediaFormatId",
                         column: x => x.MediaFormatId,
                         principalTable: "MediaFormats",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -884,9 +869,9 @@ namespace Persistence.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_BannersGalleries_GalleriesId",
-                table: "BannersGalleries",
-                column: "GalleriesId");
+                name: "IX_Banners_GalleryId",
+                table: "Banners",
+                column: "GalleryId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Categories_ParentCategoryId",
@@ -1025,7 +1010,7 @@ namespace Persistence.Migrations
                 name: "Addresses");
 
             migrationBuilder.DropTable(
-                name: "BannersGalleries");
+                name: "Banners");
 
             migrationBuilder.DropTable(
                 name: "ClassificationAttributeValuesOptions");
@@ -1071,9 +1056,6 @@ namespace Persistence.Migrations
 
             migrationBuilder.DropTable(
                 name: "Warehouses");
-
-            migrationBuilder.DropTable(
-                name: "Banners");
 
             migrationBuilder.DropTable(
                 name: "Options");

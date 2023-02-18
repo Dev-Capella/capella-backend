@@ -153,6 +153,9 @@ namespace Persistence.Migrations
                     b.Property<bool>("Active")
                         .HasColumnType("boolean");
 
+                    b.Property<int>("BannerType")
+                        .HasColumnType("integer");
+
                     b.Property<string>("Code")
                         .IsRequired()
                         .HasColumnType("text");
@@ -474,7 +477,10 @@ namespace Persistence.Migrations
                     b.Property<DateTime>("LastModifiedDate")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<int>("MediaFormatId")
+                    b.Property<int?>("MediaFormatId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("MediaType")
                         .HasColumnType("integer");
 
                     b.Property<string>("Mime")
@@ -528,6 +534,9 @@ namespace Persistence.Migrations
 
                     b.Property<DateTime>("LastModifiedDate")
                         .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("MediaFormatType")
+                        .HasColumnType("integer");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -1261,9 +1270,7 @@ namespace Persistence.Migrations
 
                     b.HasOne("Domain.Entities.MediaFormat", "MediaFormat")
                         .WithMany("Medias")
-                        .HasForeignKey("MediaFormatId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("MediaFormatId");
 
                     b.Navigation("MediaFormat");
                 });

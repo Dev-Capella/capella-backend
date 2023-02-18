@@ -7,6 +7,7 @@ using Domain.Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
+using Domain.Enums;
 
 namespace Persistence.Services
 {
@@ -117,7 +118,7 @@ namespace Persistence.Services
                 foreach (var item in productDto.Files)
                 {
                     
-                    var media = await _mediaService.SaveGalleryForBinary(item, true);
+                    var media = await _mediaService.SaveGalleryForBinary(item,MediaFormatType.PRODUCT,true);
                     galleries.Add(media);
                 }
                 product.Galleries = galleries;
@@ -305,7 +306,7 @@ namespace Persistence.Services
             foreach (var item in productDto.Files)
             {
 
-                var media = await _mediaService.SaveGalleryForBinary(item, true);
+                var media = await _mediaService.SaveGalleryForBinary(item, MediaFormatType.PRODUCT,true);
                 galleries.Add(media);
             }
             product.Galleries = galleries;

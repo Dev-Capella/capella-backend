@@ -181,10 +181,10 @@ namespace Persistence.Contexts
              .HasMany(city => city.Districts)
              .WithOne(district => district.City);
 
-            modelBuilder
-             .Entity<Media>()
-             .HasOne(media => media.MediaFormat)
-             .WithMany(mediaFormat => mediaFormat.Medias);
+            modelBuilder.Entity<Media>()
+                    .HasOne(m => m.MediaFormat)
+                    .WithMany(mf => mf.Medias)
+                    .IsRequired(false);
 
         }
     }

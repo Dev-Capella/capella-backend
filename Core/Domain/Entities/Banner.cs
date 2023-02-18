@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Domain.Enums;
 
 namespace Domain.Entities
 {
@@ -15,6 +16,7 @@ namespace Domain.Entities
         public string Link { get; set; }
         public bool Active { get; set; }
         
+        public BannerType BannerType { get; set; }
         public Gallery Gallery { get; set; }
     }
 }

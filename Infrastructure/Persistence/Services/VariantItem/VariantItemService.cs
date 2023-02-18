@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Domain.Enums;
 
 namespace Persistence.Services
 {
@@ -76,7 +77,7 @@ namespace Persistence.Services
                 foreach (var item in variantItemDto.Files)
                 {
 
-                    var media = await _mediaService.SaveGalleryForBinary(item, true);
+                    var media = await _mediaService.SaveGalleryForBinary(item,MediaFormatType.PRODUCT, true);
                     galleries.Add(media);
                 }
             }
@@ -140,7 +141,7 @@ namespace Persistence.Services
             {
                 foreach (var item in variantItemDto.Files)
                 {
-                    var media = await _mediaService.SaveGalleryForBinary(item, true);
+                    var media = await _mediaService.SaveGalleryForBinary(item,MediaFormatType.PRODUCT, true);
                     galleries.Add(media);
                 }
             }

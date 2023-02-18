@@ -7,6 +7,7 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
+using Domain.Enums;
 
 namespace Application.Services
 {
@@ -16,7 +17,7 @@ namespace Application.Services
 
         Task<Gallery> SaveGallery(IFormFile formFile, bool secure);
 
-        Task<Gallery> SaveGalleryForBinary(FileDto fileDto, bool secure);
+        Task<Gallery> SaveGalleryForBinary(FileDto fileDto, MediaFormatType mediaFormatType, bool secure);
         Task DeleteGallery(string code);
 
         string GenerateMediaUrl(string url);
