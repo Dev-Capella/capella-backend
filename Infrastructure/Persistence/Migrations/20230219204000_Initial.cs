@@ -863,6 +863,123 @@ namespace Persistence.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.InsertData(
+                table: "Brands",
+                columns: new[] { "Id", "Code", "CreatedDate", "LastModifiedDate", "Name" },
+                values: new object[,]
+                {
+                    { 1, "alfa_beta", new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5351), new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5353), "Alfa Beta" },
+                    { 2, "june", new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5355), new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5356), "June" },
+                    { 3, "brooks_brothers", new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5357), new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5357), "Brooks Brothers" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Categories",
+                columns: new[] { "Id", "Code", "CreatedDate", "Description", "LastModifiedDate", "Level", "Name", "ParentCategoryId" },
+                values: new object[] { 1, "clothes", new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5633), "Giyim", new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5633), 1, "Giyim", null });
+
+            migrationBuilder.InsertData(
+                table: "Classifications",
+                columns: new[] { "Id", "Code", "CreatedDate", "DataType", "LastModifiedDate", "Name" },
+                values: new object[,]
+                {
+                    { 1, "gender", new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5662), 3, new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5662), "Cinsiyet" },
+                    { 2, "pattern", new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5663), 0, new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5664), "Kalıp" },
+                    { 3, "stil", new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5665), 4, new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5665), "Stil" },
+                    { 4, "warranty_period", new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5666), 1, new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5667), "Garanti Süresi" },
+                    { 5, "international_sales", new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5668), 2, new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5668), "Yurt Dışı Satış" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "MediaFormats",
+                columns: new[] { "Id", "Code", "CreatedDate", "Height", "LastModifiedDate", "MediaFormatType", "Name", "Width" },
+                values: new object[,]
+                {
+                    { 1, "icon", new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5859), 100, new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5860), 0, "100x100", 100 },
+                    { 2, "small", new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5862), 200, new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5862), 0, "200x200", 200 },
+                    { 3, "thumbnail", new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5864), 300, new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5864), 0, "300x300", 300 },
+                    { 4, "medium", new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5866), 400, new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5866), 0, "400x400", 400 },
+                    { 5, "big", new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5868), 500, new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5868), 0, "500x500", 500 },
+                    { 6, "huge", new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5870), 600, new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5871), 0, "600x600", 600 },
+                    { 7, "zoom", new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5872), 700, new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5873), 0, "700x700", 700 },
+                    { 8, "superzoom", new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5874), 800, new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5874), 0, "800x800", 800 },
+                    { 9, "original_product", new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5876), null, new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5876), 0, "original", null },
+                    { 10, "carousel_back", new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5879), 540, new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5879), 1, "1920x540", 1920 },
+                    { 11, "carousel_front", new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5880), 378, new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5881), 1, "672x378", 672 }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Permissions",
+                columns: new[] { "Id", "Code", "CreatedDate", "Description", "LastModifiedDate", "Name" },
+                values: new object[,]
+                {
+                    { 1, "product_created", new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(6006), "Ürün oluşturmak için gerekli izin", new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(6006), "Ürün Oluşturma Yetkisi" },
+                    { 2, "product_deleted", new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(6008), "Ürün silmek için gerekli izin", new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(6008), "Ürün Silme Yetkisi" },
+                    { 3, "product_updated", new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(6009), "Ürün güncelleme için gerekli izin", new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(6010), "Ürün Güncelleme Yetkisi" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Roles",
+                columns: new[] { "Id", "Code", "CreatedDate", "IsActive", "LastModifiedDate", "Name" },
+                values: new object[] { 1, "admin", new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(6046), true, new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(6046), "admin" });
+
+            migrationBuilder.InsertData(
+                table: "Suppliers",
+                columns: new[] { "Id", "Address", "Code", "Company", "CreatedDate", "Email", "EmployeeName", "LastModifiedDate", "Name", "TaxNumber", "Telephone" },
+                values: new object[] { 1, "Atatürk Mah. Orhan Veli Caddesi No:6 34522 Esenyurt İstanbul Türkiye", "supplier_1", "Ozon Tekstil", new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5997), "ozontekstil@gmail.com", "Duygu Sivrioğlu", new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5998), "Elbise Tedarikçim", "123456789", "0212 886 69 86" });
+
+            migrationBuilder.InsertData(
+                table: "Tags",
+                columns: new[] { "Id", "Code", "CreatedDate", "LastModifiedDate", "Name" },
+                values: new object[,]
+                {
+                    { 1, "new_member_special", new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5911), new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5911), "Yeni Üyelere Özel" },
+                    { 2, "premium_member_special", new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5913), new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5913), "Premium Üyelere Özel" },
+                    { 3, "super_discount", new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5914), new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5915), "Süper İndirim" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Variants",
+                columns: new[] { "Id", "Code", "CreatedDate", "LastModifiedDate", "Name" },
+                values: new object[,]
+                {
+                    { 1, "size", new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5922), new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5923), "Beden" },
+                    { 2, "color", new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5924), new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5924), "Renk" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Categories",
+                columns: new[] { "Id", "Code", "CreatedDate", "Description", "LastModifiedDate", "Level", "Name", "ParentCategoryId" },
+                values: new object[,]
+                {
+                    { 2, "man", new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5649), "Erkek", new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5650), 1, "Erkek", 1 },
+                    { 3, "woman", new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5652), "Kadın", new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5652), 2, "Kadın", 1 }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Options",
+                columns: new[] { "Id", "ClassificationId", "Code", "CreatedDate", "LastModifiedDate", "Name" },
+                values: new object[,]
+                {
+                    { 1, 1, "male", new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5706), new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5706), "Erkek" },
+                    { 2, 1, "female", new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5708), new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5708), "Kadın" },
+                    { 3, 3, "evening_dresses", new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5709), new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5710), "Abiye" },
+                    { 4, 3, "night", new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5711), new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5712), "Gece" },
+                    { 5, 3, "daily", new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5713), new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5713), "Günlük" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "VariantValues",
+                columns: new[] { "Id", "Code", "CreatedDate", "LastModifiedDate", "Name", "VariantId" },
+                values: new object[,]
+                {
+                    { 1, "s", new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5965), new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5965), "S", 1 },
+                    { 2, "m", new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5967), new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5968), "M", 1 },
+                    { 3, "l", new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5971), new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5971), "L", 1 },
+                    { 4, "blue", new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5973), new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5973), "Mavi", 2 },
+                    { 5, "black", new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5974), new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5975), "Siyah", 2 }
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_Addresses_UserId",
                 table: "Addresses",

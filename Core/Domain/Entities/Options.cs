@@ -10,6 +10,8 @@ namespace Domain.Entities
     public class Options: CodeBaseEntity
     {
         public string Name { get; set; }
+
+        public int ClassificationId { get; set; }
         public Classification Classification { get; set; }
         public ICollection<ClassificationAttributeValue> ClassificationAttributeValues { get; set; }
     }

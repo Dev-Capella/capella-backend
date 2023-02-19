@@ -12,7 +12,7 @@ using Persistence.Contexts;
 namespace Persistence.Migrations
 {
     [DbContext(typeof(CapellaDbContext))]
-    [Migration("20230218161227_Initial")]
+    [Migration("20230219204000_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -219,6 +219,32 @@ namespace Persistence.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Brands");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Code = "alfa_beta",
+                            CreatedDate = new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5351),
+                            LastModifiedDate = new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5353),
+                            Name = "Alfa Beta"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Code = "june",
+                            CreatedDate = new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5355),
+                            LastModifiedDate = new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5356),
+                            Name = "June"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Code = "brooks_brothers",
+                            CreatedDate = new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5357),
+                            LastModifiedDate = new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5357),
+                            Name = "Brooks Brothers"
+                        });
                 });
 
             modelBuilder.Entity("Domain.Entities.Category", b =>
@@ -258,6 +284,40 @@ namespace Persistence.Migrations
                     b.HasIndex("ParentCategoryId");
 
                     b.ToTable("Categories");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Code = "clothes",
+                            CreatedDate = new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5633),
+                            Description = "Giyim",
+                            LastModifiedDate = new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5633),
+                            Level = 1,
+                            Name = "Giyim"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Code = "man",
+                            CreatedDate = new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5649),
+                            Description = "Erkek",
+                            LastModifiedDate = new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5650),
+                            Level = 1,
+                            Name = "Erkek",
+                            ParentCategoryId = 1
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Code = "woman",
+                            CreatedDate = new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5652),
+                            Description = "Kadın",
+                            LastModifiedDate = new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5652),
+                            Level = 2,
+                            Name = "Kadın",
+                            ParentCategoryId = 1
+                        });
                 });
 
             modelBuilder.Entity("Domain.Entities.City", b =>
@@ -320,6 +380,53 @@ namespace Persistence.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Classifications");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Code = "gender",
+                            CreatedDate = new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5662),
+                            DataType = 3,
+                            LastModifiedDate = new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5662),
+                            Name = "Cinsiyet"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Code = "pattern",
+                            CreatedDate = new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5663),
+                            DataType = 0,
+                            LastModifiedDate = new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5664),
+                            Name = "Kalıp"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Code = "stil",
+                            CreatedDate = new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5665),
+                            DataType = 4,
+                            LastModifiedDate = new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5665),
+                            Name = "Stil"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Code = "warranty_period",
+                            CreatedDate = new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5666),
+                            DataType = 1,
+                            LastModifiedDate = new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5667),
+                            Name = "Garanti Süresi"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Code = "international_sales",
+                            CreatedDate = new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5668),
+                            DataType = 2,
+                            LastModifiedDate = new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5668),
+                            Name = "Yurt Dışı Satış"
+                        });
                 });
 
             modelBuilder.Entity("Domain.Entities.ClassificationAttributeValue", b =>
@@ -550,6 +657,127 @@ namespace Persistence.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("MediaFormats");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Code = "icon",
+                            CreatedDate = new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5859),
+                            Height = 100,
+                            LastModifiedDate = new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5860),
+                            MediaFormatType = 0,
+                            Name = "100x100",
+                            Width = 100
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Code = "small",
+                            CreatedDate = new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5862),
+                            Height = 200,
+                            LastModifiedDate = new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5862),
+                            MediaFormatType = 0,
+                            Name = "200x200",
+                            Width = 200
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Code = "thumbnail",
+                            CreatedDate = new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5864),
+                            Height = 300,
+                            LastModifiedDate = new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5864),
+                            MediaFormatType = 0,
+                            Name = "300x300",
+                            Width = 300
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Code = "medium",
+                            CreatedDate = new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5866),
+                            Height = 400,
+                            LastModifiedDate = new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5866),
+                            MediaFormatType = 0,
+                            Name = "400x400",
+                            Width = 400
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Code = "big",
+                            CreatedDate = new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5868),
+                            Height = 500,
+                            LastModifiedDate = new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5868),
+                            MediaFormatType = 0,
+                            Name = "500x500",
+                            Width = 500
+                        },
+                        new
+                        {
+                            Id = 6,
+                            Code = "huge",
+                            CreatedDate = new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5870),
+                            Height = 600,
+                            LastModifiedDate = new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5871),
+                            MediaFormatType = 0,
+                            Name = "600x600",
+                            Width = 600
+                        },
+                        new
+                        {
+                            Id = 7,
+                            Code = "zoom",
+                            CreatedDate = new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5872),
+                            Height = 700,
+                            LastModifiedDate = new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5873),
+                            MediaFormatType = 0,
+                            Name = "700x700",
+                            Width = 700
+                        },
+                        new
+                        {
+                            Id = 8,
+                            Code = "superzoom",
+                            CreatedDate = new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5874),
+                            Height = 800,
+                            LastModifiedDate = new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5874),
+                            MediaFormatType = 0,
+                            Name = "800x800",
+                            Width = 800
+                        },
+                        new
+                        {
+                            Id = 9,
+                            Code = "original_product",
+                            CreatedDate = new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5876),
+                            LastModifiedDate = new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5876),
+                            MediaFormatType = 0,
+                            Name = "original"
+                        },
+                        new
+                        {
+                            Id = 10,
+                            Code = "carousel_back",
+                            CreatedDate = new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5879),
+                            Height = 540,
+                            LastModifiedDate = new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5879),
+                            MediaFormatType = 1,
+                            Name = "1920x540",
+                            Width = 1920
+                        },
+                        new
+                        {
+                            Id = 11,
+                            Code = "carousel_front",
+                            CreatedDate = new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5880),
+                            Height = 378,
+                            LastModifiedDate = new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5881),
+                            MediaFormatType = 1,
+                            Name = "672x378",
+                            Width = 672
+                        });
                 });
 
             modelBuilder.Entity("Domain.Entities.Options", b =>
@@ -582,6 +810,53 @@ namespace Persistence.Migrations
                     b.HasIndex("ClassificationId");
 
                     b.ToTable("Options");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            ClassificationId = 1,
+                            Code = "male",
+                            CreatedDate = new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5706),
+                            LastModifiedDate = new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5706),
+                            Name = "Erkek"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            ClassificationId = 1,
+                            Code = "female",
+                            CreatedDate = new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5708),
+                            LastModifiedDate = new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5708),
+                            Name = "Kadın"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            ClassificationId = 3,
+                            Code = "evening_dresses",
+                            CreatedDate = new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5709),
+                            LastModifiedDate = new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5710),
+                            Name = "Abiye"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            ClassificationId = 3,
+                            Code = "night",
+                            CreatedDate = new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5711),
+                            LastModifiedDate = new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5712),
+                            Name = "Gece"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            ClassificationId = 3,
+                            Code = "daily",
+                            CreatedDate = new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5713),
+                            LastModifiedDate = new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5713),
+                            Name = "Günlük"
+                        });
                 });
 
             modelBuilder.Entity("Domain.Entities.Permission", b =>
@@ -613,6 +888,35 @@ namespace Persistence.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Permissions");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Code = "product_created",
+                            CreatedDate = new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(6006),
+                            Description = "Ürün oluşturmak için gerekli izin",
+                            LastModifiedDate = new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(6006),
+                            Name = "Ürün Oluşturma Yetkisi"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Code = "product_deleted",
+                            CreatedDate = new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(6008),
+                            Description = "Ürün silmek için gerekli izin",
+                            LastModifiedDate = new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(6008),
+                            Name = "Ürün Silme Yetkisi"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Code = "product_updated",
+                            CreatedDate = new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(6009),
+                            Description = "Ürün güncelleme için gerekli izin",
+                            LastModifiedDate = new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(6010),
+                            Name = "Ürün Güncelleme Yetkisi"
+                        });
                 });
 
             modelBuilder.Entity("Domain.Entities.Product", b =>
@@ -696,6 +1000,17 @@ namespace Persistence.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Roles");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Code = "admin",
+                            CreatedDate = new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(6046),
+                            IsActive = true,
+                            LastModifiedDate = new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(6046),
+                            Name = "admin"
+                        });
                 });
 
             modelBuilder.Entity("Domain.Entities.Supplier", b =>
@@ -747,6 +1062,22 @@ namespace Persistence.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Suppliers");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Address = "Atatürk Mah. Orhan Veli Caddesi No:6 34522 Esenyurt İstanbul Türkiye",
+                            Code = "supplier_1",
+                            Company = "Ozon Tekstil",
+                            CreatedDate = new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5997),
+                            Email = "ozontekstil@gmail.com",
+                            EmployeeName = "Duygu Sivrioğlu",
+                            LastModifiedDate = new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5998),
+                            Name = "Elbise Tedarikçim",
+                            TaxNumber = "123456789",
+                            Telephone = "0212 886 69 86"
+                        });
                 });
 
             modelBuilder.Entity("Domain.Entities.Tag", b =>
@@ -774,6 +1105,32 @@ namespace Persistence.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Tags");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Code = "new_member_special",
+                            CreatedDate = new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5911),
+                            LastModifiedDate = new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5911),
+                            Name = "Yeni Üyelere Özel"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Code = "premium_member_special",
+                            CreatedDate = new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5913),
+                            LastModifiedDate = new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5913),
+                            Name = "Premium Üyelere Özel"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Code = "super_discount",
+                            CreatedDate = new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5914),
+                            LastModifiedDate = new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5915),
+                            Name = "Süper İndirim"
+                        });
                 });
 
             modelBuilder.Entity("Domain.Entities.Unit", b =>
@@ -880,6 +1237,24 @@ namespace Persistence.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Variants");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Code = "size",
+                            CreatedDate = new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5922),
+                            LastModifiedDate = new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5923),
+                            Name = "Beden"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Code = "color",
+                            CreatedDate = new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5924),
+                            LastModifiedDate = new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5924),
+                            Name = "Renk"
+                        });
                 });
 
             modelBuilder.Entity("Domain.Entities.VariantItem", b =>
@@ -949,6 +1324,53 @@ namespace Persistence.Migrations
                     b.HasIndex("VariantId");
 
                     b.ToTable("VariantValues");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Code = "s",
+                            CreatedDate = new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5965),
+                            LastModifiedDate = new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5965),
+                            Name = "S",
+                            VariantId = 1
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Code = "m",
+                            CreatedDate = new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5967),
+                            LastModifiedDate = new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5968),
+                            Name = "M",
+                            VariantId = 1
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Code = "l",
+                            CreatedDate = new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5971),
+                            LastModifiedDate = new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5971),
+                            Name = "L",
+                            VariantId = 1
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Code = "blue",
+                            CreatedDate = new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5973),
+                            LastModifiedDate = new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5973),
+                            Name = "Mavi",
+                            VariantId = 2
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Code = "black",
+                            CreatedDate = new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5974),
+                            LastModifiedDate = new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5975),
+                            Name = "Siyah",
+                            VariantId = 2
+                        });
                 });
 
             modelBuilder.Entity("Domain.Entities.Warehouse", b =>
