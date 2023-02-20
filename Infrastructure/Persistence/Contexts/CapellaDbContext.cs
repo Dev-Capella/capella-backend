@@ -444,11 +444,11 @@ namespace Persistence.Contexts
                 new MediaFormat
                 {
                     Id = 9,
-                    Code = "original_product",
+                    Code = "original",
                     Name = "original",
                     Height = null,
                     Width = null,
-                    MediaFormatType = MediaFormatType.PRODUCT,
+                    MediaFormatType = MediaFormatType.ALL,
                     CreatedDate = DateTime.UtcNow,
                     LastModifiedDate = DateTime.UtcNow
                 },
