@@ -64,14 +64,6 @@ namespace Persistence.Services
             variantItem.ClassificationAttributeValues = classificationAttributeValues;
 
             var galleries = new HashSet<Gallery>();
-            if (variantItemDto.Galleries != null)
-            {
-                var galleryDto = _mapper.Map<HashSet<Gallery>>(variantItemDto.Galleries);
-                foreach (var item in galleryDto)
-                {
-                    galleries.Add(item);
-                }
-            }
             if (variantItemDto.Files != null)
             {
                 foreach (var item in variantItemDto.Files)

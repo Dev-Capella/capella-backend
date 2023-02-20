@@ -174,7 +174,7 @@ namespace Persistence.Services
                 gallery.Name = fileDto.FileName;
 
                 var mediaFormats = await _mediaFormatReadRepository
-                    .GetWhere(x => x.MediaFormatType==mediaFormatType).ToListAsync();
+                    .GetWhere(x => x.MediaFormatType==mediaFormatType || x.MediaFormatType==MediaFormatType.ALL).ToListAsync();
                 var medias = new HashSet<Media>();
                 foreach (var mediaFormat in mediaFormats)
                 {
@@ -189,7 +189,7 @@ namespace Persistence.Services
                        
                         using (var image = Image.Load(stream))
                         {
-                            if (mediaFormat.Code != "original")
+                            if (mediaFormat.MediaFormatType != MediaFormatType.ALL)
                             {
                                
                                 var options = new ResizeOptions
