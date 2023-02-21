@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace Persistence.Repositories
 {
-    public class WriteRepository<T> : IWriteRepository<T> where T:BaseEntity,ItemEntity
+    public class WriteRepository<T> : IWriteRepository<T> where T : BaseEntity, ItemEntity
     {
         private readonly CapellaDbContext _context;
 
@@ -31,20 +31,15 @@ namespace Persistence.Repositories
 
         public async Task AddAsync(T model)
         {
-           
-                try
-                {
-                    EntityEntry<T> entityEntry = Table.Add(model);
-                    await _context.SaveChangesAsync();
-                    
-                }
-                catch (Exception ex)
-                {
-                    
-                    throw new Exception(ex.ToString(), ex);
-                }
-            
- 
+            try
+            {
+                EntityEntry<T> entityEntry = Table.Add(model);
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.ToString(), ex);
+            }
         }
 
         public async Task RemoveAsync(T model)
@@ -53,13 +48,13 @@ namespace Persistence.Repositories
             {
                 EntityEntry<T> entityEntry = Table.Remove(model);
                 await _context.SaveChangesAsync();
-
-            }catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 throw new Exception(ex.ToString(), ex);
             }
-           
         }
+
         public async Task UpdateAsync(T newModel, int id)
         {
             try
@@ -83,29 +78,31 @@ namespace Persistence.Repositories
                 }
 
                 await _context.SaveChangesAsync();
-
-            }catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 throw new Exception(ex.ToString(), ex);
             }
         }
+
         public async Task<T> AddAsyncWithModel(T model)
         {
-           
-                try
-                {
-                    EntityEntry<T> entityEntry = Table.Add(model);
-                    await _context.SaveChangesAsync();
-                    return entityEntry.Entity;
-              
-                }
-                catch (Exception ex)
-                {
-         
-                    throw new Exception(ex.ToString(), ex);
-                }
-            
+            try
+            {
+                EntityEntry<T> entityEntry = Table.Add(model);
+                await _context.SaveChangesAsync();
+                return entityEntry.Entity;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.ToString(), ex);
+            }
+        }
 
+        public async Task AddRangeAsync(IEnumerable<T> models)
+        {
+            await Table.AddRangeAsync(models);
+            await _context.SaveChangesAsync();
         }
 
         public async Task<T> UpdateAsyncWithModel(T model, int id)
@@ -120,18 +117,23 @@ namespace Persistence.Repositories
                 if (model == null)
                     throw new ArgumentNullException(nameof(model));
 
-                _context.Entry(dbModel).CurrentValues.SetValues(model);
-
-                foreach (var property in _context.Entry(dbModel).Properties)
+                // Update each property in the database model with the corresponding value from the model object
+                var properties = typeof(T).GetProperties()
+                    .Where(p => p.PropertyType.Namespace == "System" && p.CanWrite);
+                foreach (var property in properties)
                 {
-                    if (property.CurrentValue == null)
+                    var modelValue = property.GetValue(model);
+                    var dbValue = property.GetValue(dbModel);
+
+                    if (modelValue != null && !modelValue.Equals(dbValue))
                     {
-                        _context.Entry(dbModel).Property(property.Metadata.Name).IsModified = false;
+                        _context.Entry(dbModel).Property(property.Name).CurrentValue = modelValue;
                     }
                 }
-                return dbModel;
-                await _context.SaveChangesAsync();
 
+
+                await _context.SaveChangesAsync();
+                return dbModel;
             }
             catch (Exception ex)
             {

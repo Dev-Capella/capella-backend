@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace Persistence.Services
 {
@@ -83,7 +84,7 @@ namespace Persistence.Services
             {
                 foreach (var item in classificationAttributeValueDto.Options)
                 {
-                    var option = _optionsReadRepository.GetWhere(x => x.Code == item.Code).FirstOrDefault();
+                    var option = await _optionsReadRepository.GetWhere(x => x.Code == item.Code).FirstOrDefaultAsync();
                     options.Add(option);
                 }
             }

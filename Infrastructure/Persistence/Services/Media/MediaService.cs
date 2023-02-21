@@ -1,4 +1,5 @@
-﻿using Application.DataTransferObject;
+﻿using System.Collections.Concurrent;
+using Application.DataTransferObject;
 using Application.Repositories;
 using Application.Services;
 using Domain.Entities;
@@ -157,7 +158,7 @@ namespace Persistence.Services
         }
 
 
-        public async Task<Gallery> SaveGalleryForBinary(FileDto fileDto, MediaFormatType mediaFormatType, bool secure)
+        public Gallery SaveGalleryForBinary(FileDto fileDto, IEnumerable<MediaFormat> mediaFormats, bool secure)
         {
             try
             {
@@ -172,39 +173,39 @@ namespace Persistence.Services
                 Directory.CreateDirectory(fullPath);
                 gallery.Code = Guid.NewGuid().ToString();
                 gallery.Name = fileDto.FileName;
-
-                var mediaFormats = await _mediaFormatReadRepository
-                    .GetWhere(x => x.MediaFormatType==mediaFormatType || x.MediaFormatType==MediaFormatType.ALL).ToListAsync();
+                
                 var medias = new HashSet<Media>();
-                foreach (var mediaFormat in mediaFormats)
+                Parallel.ForEach(mediaFormats, mediaFormat =>
                 {
-                    var filenamehash = new string(Enumerable.Repeat(chars, 20).Select(s => s[random.Next(s.Length)]).ToArray());
+                    var filenamehash =
+                        new string(Enumerable.Repeat(chars, 20).Select(s => s[random.Next(s.Length)]).ToArray());
                     var imageBytes = Convert.FromBase64String(fileDto.File);
                     using (var stream = new MemoryStream(imageBytes))
                     {
 
                         stream.Position = 0;
-                      
-                        var fileName = Path.Combine(fullPath, filenamehash + "-" + mediaFormat.Name+Path.GetExtension(fileDto.FileName));
-                       
+
+                        var fileName = Path.Combine(fullPath,
+                            filenamehash + "-" + mediaFormat.Name + Path.GetExtension(fileDto.FileName));
+
                         using (var image = Image.Load(stream))
                         {
                             if (mediaFormat.MediaFormatType != MediaFormatType.ALL)
                             {
-                               
+
                                 var options = new ResizeOptions
                                 {
                                     Size = new Size(mediaFormat.Height ?? 0, mediaFormat.Width ?? 0),
                                     Mode = ResizeMode.Max
                                 };
-                               
+
                                 image.Mutate(x => x.Resize(options));
-                               
+
                             }
 
                             using (var output = File.OpenWrite(fileName))
                             {
-                               
+
                                 image.Save(output, GetEncoder(fileName));
                             }
                         }
@@ -212,7 +213,7 @@ namespace Persistence.Services
 
                     Media media = new();
                     media.RealFilename = fileDto.FileName;
-                    media.MediaFormat = await _mediaFormatReadRepository.GetWhere(x => x.Code == mediaFormat.Code).FirstOrDefaultAsync();
+                    media.MediaFormat = mediaFormat;
                     media.EncodedFilename = filenamehash;
                     media.Extension = Path.GetExtension(fileDto.FileName);
                     media.FilePath = filePath;
@@ -220,14 +221,15 @@ namespace Persistence.Services
                     media.Size = fileDto.Length;
                     media.Mime = fileDto.ContentType;
                     media.Secure = secure;
-                    var absolutePath = $"{filePath}/{filenamehash}-{mediaFormat.Name}{Path.GetExtension(fileDto.FileName)}";
+                    var absolutePath =
+                        $"{filePath}/{filenamehash}-{mediaFormat.Name}{Path.GetExtension(fileDto.FileName)}";
                     media.AbsolutePath = absolutePath;
                     media.ServePath = absolutePath;
                     media.Code = Guid.NewGuid().ToString();
-                    await _mediaWriteRepository.AddAsync(media);
+
                     medias.Add(media);
 
-                }
+                });
                 gallery.Medias = medias;
                 return gallery;
             }
@@ -265,9 +267,9 @@ namespace Persistence.Services
             foreach (var item in gallery.Medias)
             {
                 item.Deleted = true;
-                _mediaWriteRepository.UpdateAsync(item, item.Id);
+                await _mediaWriteRepository.UpdateAsync(item, item.Id);
             }
-           
+            await _galleryWriteRepository.RemoveAsync(gallery);
         }
 
         public string GenerateMediaUrl(string url)

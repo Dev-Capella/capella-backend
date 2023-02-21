@@ -17,7 +17,7 @@ namespace Application.Services
 
         Task<Gallery> SaveGallery(IFormFile formFile, bool secure);
 
-        Task<Gallery> SaveGalleryForBinary(FileDto fileDto, MediaFormatType mediaFormatType, bool secure);
+        Gallery SaveGalleryForBinary(FileDto fileDto, IEnumerable<MediaFormat> mediaFormats, bool secure);
         Task DeleteGallery(string code);
 
         string GenerateMediaUrl(string url);

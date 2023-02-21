@@ -10,6 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Domain.Enums;
+using Microsoft.EntityFrameworkCore;
 
 namespace Persistence.Services
 {
@@ -21,6 +22,7 @@ namespace Persistence.Services
         private readonly IProductReadRepository _productReadRepository;
         private readonly IMediaService _mediaService;
         private readonly IClassificationAttributeValueService _classificationAttributeValueService;
+        private readonly IMediaFormatReadRepository _mediaFormatReadRepository;
         private readonly IMapper _mapper;
         public VariantItemService(IVariantItemReadRepository variantItemReadRepository, 
             IClassificationAttributeValueService classificationAttributeValueService,
@@ -28,6 +30,7 @@ namespace Persistence.Services
             IVariantItemWriteRepository variantItemWriteRepository,
             IMediaService mediaService,
             IMapper mapper,
+            IMediaFormatReadRepository mediaFormatReadRepository,
             IProductReadRepository productReadRepository)
         {
             _variantItemReadRepository = variantItemReadRepository;
@@ -36,6 +39,7 @@ namespace Persistence.Services
             _variantItemWriteRepository = variantItemWriteRepository;
             _productReadRepository = productReadRepository;
             _mediaService = mediaService;
+            _mediaFormatReadRepository = mediaFormatReadRepository;
             _mapper = mapper;
         }
         public async Task<VariantItem> Save(VariantItemDto variantItemDto)
@@ -64,15 +68,13 @@ namespace Persistence.Services
             variantItem.ClassificationAttributeValues = classificationAttributeValues;
 
             var galleries = new HashSet<Gallery>();
-            if (variantItemDto.Files != null)
+            var mediaFormats = await _mediaFormatReadRepository
+                .GetWhere(x => x.MediaFormatType==MediaFormatType.PRODUCT || x.MediaFormatType==MediaFormatType.ALL).ToListAsync();
+            Parallel.ForEach(variantItemDto.Files, item =>
             {
-                foreach (var item in variantItemDto.Files)
-                {
-
-                    var media = await _mediaService.SaveGalleryForBinary(item,MediaFormatType.PRODUCT, true);
-                    galleries.Add(media);
-                }
-            }
+                var model = _mediaService.SaveGalleryForBinary(item, mediaFormats, true);
+                galleries.Add(model);
+            });
             variantItem.Galleries = galleries;
 
             var model = await _variantItemWriteRepository.AddAsyncWithModel(variantItem);
@@ -129,11 +131,13 @@ namespace Persistence.Services
                 }
             }
            
+            var mediaFormats = await _mediaFormatReadRepository
+                .GetWhere(x => x.MediaFormatType==MediaFormatType.PRODUCT || x.MediaFormatType==MediaFormatType.ALL).ToListAsync();
             if (variantItemDto.Files != null)
             {
                 foreach (var item in variantItemDto.Files)
                 {
-                    var media = await _mediaService.SaveGalleryForBinary(item,MediaFormatType.PRODUCT, true);
+                    var media = _mediaService.SaveGalleryForBinary(item,mediaFormats, true);
                     galleries.Add(media);
                 }
             }

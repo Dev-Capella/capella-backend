@@ -23,6 +23,8 @@ namespace Persistence.Services
         private readonly ISupplierReadRepository _supplierReadRepository;
         private readonly IClassificationAttributeValueService _classificationAttributeValueService;
         private readonly IVariantItemService _variantItemService;
+        private readonly IMediaWriteRepository _mediaWriteRepository;
+        private readonly IMediaFormatReadRepository _mediaFormatReadRepository;
         private readonly IMapper _mapper;
 
         public ProductService(IProductWriteRepository productWriteRepository,
@@ -35,6 +37,8 @@ namespace Persistence.Services
             IBrandReadRepository brandReadRepository,
             ISupplierReadRepository supplierReadRepository,
             ITagReadRepository tagReadRepository,
+            IMediaWriteRepository mediaWriteRepository,
+            IMediaFormatReadRepository mediaFormatReadRepository,
             IMapper mapper)
         {
             _productReadRepository = productReadRepository;
@@ -47,10 +51,13 @@ namespace Persistence.Services
             _brandReadRepository = brandReadRepository;
             _supplierReadRepository = supplierReadRepository;
             _variantReadRepository = variantReadRepository;
+            _mediaWriteRepository = mediaWriteRepository;
+            _mediaFormatReadRepository = mediaFormatReadRepository;
             _mapper = mapper;
         }
 
         #region SaveProduct
+
         public async Task Save(ProductDto productDto)
         {
             var transaction = await _productWriteRepository.DbTransactional();
@@ -59,7 +66,7 @@ namespace Persistence.Services
             product.Description = productDto.Description;
             product.Active = productDto.Active;
             product.Code = Guid.NewGuid().ToString();
-            product.Price = productDto.Price !=null ? (decimal)productDto.Price : 0;
+            product.Price = productDto.Price != null ? (decimal)productDto.Price : 0;
             product.DiscountedPrice = productDto.DiscountedPrice != null ? (decimal)productDto.DiscountedPrice : 0;
 
             try
@@ -70,6 +77,7 @@ namespace Persistence.Services
                     var category = _categoryReadRepository.GetWhere(x => x.Code == item.Code).FirstOrDefault();
                     categories.Add(category);
                 }
+
                 product.Categories = categories;
 
                 var classificationAttributeValues = new HashSet<ClassificationAttributeValue>();
@@ -86,8 +94,8 @@ namespace Persistence.Services
                 {
                     var variant = await _variantReadRepository.GetWhere(x => x.Code == item.Code).FirstOrDefaultAsync();
                     variants.Add(variant);
-
                 }
+
                 product.Variants = variants;
 
                 var variantItems = new HashSet<VariantItem>();
@@ -99,10 +107,12 @@ namespace Persistence.Services
 
                 product.VariantItems = variantItems;
 
-                var brand = await _brandReadRepository.GetWhere(x => x.Code == productDto.Brand.Code).FirstOrDefaultAsync();
+                var brand = await _brandReadRepository.GetWhere(x => x.Code == productDto.Brand.Code)
+                    .FirstOrDefaultAsync();
                 product.Brand = brand;
 
-                var supplier = await _supplierReadRepository.GetWhere(x => x.Code == productDto.Supplier.Code).FirstOrDefaultAsync();
+                var supplier = await _supplierReadRepository.GetWhere(x => x.Code == productDto.Supplier.Code)
+                    .FirstOrDefaultAsync();
                 product.Supplier = supplier;
 
                 var tags = new HashSet<Tag>();
@@ -110,17 +120,26 @@ namespace Persistence.Services
                 {
                     var tag = await _tagReadRepository.GetWhere(x => x.Code == item.Code).FirstOrDefaultAsync();
                     tags.Add(tag);
-
                 }
+
                 product.Tags = tags;
 
                 var galleries = new HashSet<Gallery>();
-                foreach (var item in productDto.Files)
+                var mediaFormats = await _mediaFormatReadRepository
+                    .GetWhere(x =>
+                        x.MediaFormatType == MediaFormatType.PRODUCT || x.MediaFormatType == MediaFormatType.ALL)
+                    .ToListAsync();
+                Parallel.ForEach(productDto.Files, item =>
                 {
-                    
-                    var media = await _mediaService.SaveGalleryForBinary(item,MediaFormatType.PRODUCT,true);
-                    galleries.Add(media);
+                    var model = _mediaService.SaveGalleryForBinary(item, mediaFormats, true);
+                    galleries.Add(model);
+                });
+
+                foreach (var gallery in galleries)
+                {
+                    await _mediaWriteRepository.AddRangeAsync(gallery.Medias);
                 }
+
                 product.Galleries = galleries;
 
                 await _productWriteRepository.AddAsync(product);
@@ -131,13 +150,13 @@ namespace Persistence.Services
             {
                 transaction.Rollback();
             }
-
         }
+
         #endregion
 
         public async Task<List<ProductListDto>> GetAllProducts()
         {
-            var products = await _productReadRepository.GetAllWithIncludeStringParam(true, 
+            var products = await _productReadRepository.GetAllWithIncludeStringParam(true,
                 "Categories",
                 "Variants",
                 "Brand",
@@ -153,34 +172,33 @@ namespace Persistence.Services
             var product = await _productReadRepository.GetWhere(x => x.Code == code)
                 .Include(x => x.Categories)
                 .Include(x => x.ClassificationAttributeValues)
-                    .ThenInclude(cav => cav.Options)
+                .ThenInclude(cav => cav.Options)
                 .Include(x => x.ClassificationAttributeValues)
-                    .ThenInclude(cav => cav.Classification)
-                    .ThenInclude(c => c.Options)
-                .Include(x=> x.Variants)
+                .ThenInclude(cav => cav.Classification)
+                .ThenInclude(c => c.Options)
+                .Include(x => x.Variants)
                 .Include(x => x.VariantItems)
-                    .ThenInclude(variantItems => variantItems.ClassificationAttributeValues)
-                        .ThenInclude(classificationAttributeValues => classificationAttributeValues.Options)
+                .ThenInclude(variantItems => variantItems.ClassificationAttributeValues)
+                .ThenInclude(classificationAttributeValues => classificationAttributeValues.Options)
                 .Include(x => x.VariantItems)
-                        .ThenInclude(variantItems => variantItems.ClassificationAttributeValues)
-                        .ThenInclude(classificationAttributeValues => classificationAttributeValues.Classification)
-                        .ThenInclude(classification=> classification.Options)
-                .Include(x=> x.VariantItems)
-                    .ThenInclude(x => x.VariantValues)
-                 .Include(x => x.VariantItems)
-                    .ThenInclude(variantItems => variantItems.Galleries)
-                    .ThenInclude(galleries => galleries.Medias.Where(m => m.MediaFormat.Code == "original"))
+                .ThenInclude(variantItems => variantItems.ClassificationAttributeValues)
+                .ThenInclude(classificationAttributeValues => classificationAttributeValues.Classification)
+                .ThenInclude(classification => classification.Options)
+                .Include(x => x.VariantItems)
+                .ThenInclude(x => x.VariantValues)
+                .Include(x => x.VariantItems)
+                .ThenInclude(variantItems => variantItems.Galleries)
+                .ThenInclude(galleries => galleries.Medias.Where(m => m.MediaFormat.Code == "original"))
                 .Include(x => x.Brand)
                 .Include(x => x.Tags)
                 .Include(x => x.Galleries)
-                    .ThenInclude(galleries => galleries.Medias.Where(m => m.MediaFormat.Code == "original"))
+                .ThenInclude(galleries => galleries.Medias.Where(m => m.MediaFormat.Code == "original"))
                 .Include(x => x.Supplier)
                 .FirstOrDefaultAsync();
 
             var productDto = _mapper.Map<ProductDto>(product);
 
             return productDto;
-
         }
 
         public async Task Delete(string code)
@@ -190,131 +208,165 @@ namespace Persistence.Services
         }
 
         #region UpdateProduct
+
         public async Task Update(ProductDto productDto)
         {
             var product = await _productReadRepository.GetWhere(x => x.Code == productDto.Code)
-               .Include(x => x.Categories)
-               .Include(x => x.ClassificationAttributeValues)
-                   .ThenInclude(cav => cav.Options)
-               .Include(x => x.ClassificationAttributeValues)
-                   .ThenInclude(cav => cav.Classification)
-                   .ThenInclude(c => c.Options)
-               .Include(x => x.Variants)
-               .Include(x => x.VariantItems)
-                   .ThenInclude(variantItems => variantItems.ClassificationAttributeValues)
-                       .ThenInclude(classificationAttributeValues => classificationAttributeValues.Options)
-               .Include(x => x.VariantItems)
-                       .ThenInclude(variantItems => variantItems.ClassificationAttributeValues)
-                       .ThenInclude(classificationAttributeValues => classificationAttributeValues.Classification)
-                       .ThenInclude(classification => classification.Options)
-               .Include(x => x.VariantItems)
-                   .ThenInclude(x => x.VariantValues)
+                .Include(x => x.Categories)
+                .Include(x => x.ClassificationAttributeValues)
+                .ThenInclude(cav => cav.Options)
+                .Include(x => x.ClassificationAttributeValues)
+                .ThenInclude(cav => cav.Classification)
+                .ThenInclude(c => c.Options)
+                .Include(x => x.Variants)
                 .Include(x => x.VariantItems)
-                   .ThenInclude(variantItems => variantItems.Galleries)
-                   .ThenInclude(galleries => galleries.Medias.Where(m => m.MediaFormat.Code == "original"))
-               .Include(x => x.Brand)
-               .Include(x => x.Tags)
-               .Include(x => x.Galleries)
-               .Include(x => x.Supplier)
-               .FirstOrDefaultAsync();
-            product.Name = productDto.Name;
-            product.Description = productDto.Description;
-            product.Active = productDto.Active;
-            product.Price = productDto.Price != null ? (decimal)productDto.Price : 0;
-            product.DiscountedPrice = productDto.DiscountedPrice != null ? (decimal)productDto.DiscountedPrice : 0;
-            var categories = new HashSet<Category>();
-            foreach (var item in productDto.Categories)
+                .ThenInclude(variantItems => variantItems.ClassificationAttributeValues)
+                .ThenInclude(classificationAttributeValues => classificationAttributeValues.Options)
+                .Include(x => x.VariantItems)
+                .ThenInclude(variantItems => variantItems.ClassificationAttributeValues)
+                .ThenInclude(classificationAttributeValues => classificationAttributeValues.Classification)
+                .ThenInclude(classification => classification.Options)
+                .Include(x => x.VariantItems)
+                .ThenInclude(x => x.VariantValues)
+                .Include(x => x.VariantItems)
+                .ThenInclude(variantItems => variantItems.Galleries)
+                .ThenInclude(galleries => galleries.Medias.Where(m => m.MediaFormat.Code == "original"))
+                .Include(x => x.Brand)
+                .Include(x => x.Tags)
+                .Include(x => x.Galleries)
+                .Include(x => x.Supplier)
+                .FirstOrDefaultAsync();
+            var transaction = await _productWriteRepository.DbTransactional();
+            try
             {
-                var category = _categoryReadRepository.GetWhere(x => x.Code == item.Code).FirstOrDefault();
-                categories.Add(category);
-            }
-            product.Categories = categories;
-
-            var classificationAttributeValues = new HashSet<ClassificationAttributeValue>();
-            foreach (var item in productDto.ClassificationAttributeValues)
-            {
-                if (product.ClassificationAttributeValues.Select(x=>x.Code).Any(x=> x==item.Code))
+                product.Name = productDto.Name;
+                product.Description = productDto.Description;
+                product.Active = productDto.Active;
+                product.Price = productDto.Price != null ? (decimal)productDto.Price : 0;
+                product.DiscountedPrice = productDto.DiscountedPrice != null ? (decimal)productDto.DiscountedPrice : 0;
+                var categories = new HashSet<Category>();
+                foreach (var item in productDto.Categories)
                 {
-                    var modifiedclassificationattributevalue = await _classificationAttributeValueService.Update(item);
-                    classificationAttributeValues.Add(modifiedclassificationattributevalue);
-                }else
-                {
-                    var modifiedclassificationattributevalue = await _classificationAttributeValueService.Save(item);
-                    classificationAttributeValues.Add(modifiedclassificationattributevalue);
+                    var category = _categoryReadRepository.GetWhere(x => x.Code == item.Code).FirstOrDefault();
+                    categories.Add(category);
                 }
-            }
-            var notContainsClassificationAttributeValueModel = product.ClassificationAttributeValues
-                .Select(x => x.Code).Where(x => !productDto.ClassificationAttributeValues.Select(x => x.Code).Contains(x)).ToList();
-            foreach (var item in notContainsClassificationAttributeValueModel)
-            {
-                await _classificationAttributeValueService.Delete(item);
-            }
-            product.ClassificationAttributeValues = classificationAttributeValues;
 
-            var variants = new HashSet<Variant>();
-            foreach (var item in productDto.Variants)
-            {
-                var variant = await _variantReadRepository.GetWhere(x => x.Code == item.Code).FirstOrDefaultAsync();
-                variants.Add(variant);
+                product.Categories = categories;
 
-            }
-            product.Variants = variants;
-
-            var variantItems = new HashSet<VariantItem>();
-            foreach (var item in productDto.VariantItems)
-            {
-                if (product.VariantItems.Select(x => x.Code).Any(x => x == item.Code))
+                var classificationAttributeValues = new HashSet<ClassificationAttributeValue>();
+                foreach (var item in productDto.ClassificationAttributeValues)
                 {
-                    var modifiedVariantItem = await _variantItemService
-                        .Update(item,
-                        product.VariantItems.Where(x=> x.Code==item.Code).Select(y=> y.Galleries).FirstOrDefault(),
-                        product.VariantItems.Where(x => x.Code == item.Code).Select(y => y.ClassificationAttributeValues).FirstOrDefault());
-                    variantItems.Add(modifiedVariantItem);
+                    if (product.ClassificationAttributeValues.Select(x => x.Code).Any(x => x == item.Code))
+                    {
+                        var modifiedclassificationattributevalue =
+                            await _classificationAttributeValueService.Update(item);
+                        classificationAttributeValues.Add(modifiedclassificationattributevalue);
+                    }
+                    else
+                    {
+                        var modifiedclassificationattributevalue =
+                            await _classificationAttributeValueService.Save(item);
+                        classificationAttributeValues.Add(modifiedclassificationattributevalue);
+                    }
                 }
-                else
+
+                var notContainsClassificationAttributeValueModel = product.ClassificationAttributeValues
+                    .Select(x => x.Code)
+                    .Where(x => !productDto.ClassificationAttributeValues.Select(x => x.Code).Contains(x)).ToList();
+                foreach (var item in notContainsClassificationAttributeValueModel)
                 {
-                    var variantItem = await _variantItemService.Save(item);
-                    variantItems.Add(variantItem);
+                    await _classificationAttributeValueService.Delete(item);
                 }
-            }
-            product.VariantItems = variantItems;
 
-            var brand = await _brandReadRepository.GetWhere(x => x.Code == productDto.Brand.Code).FirstOrDefaultAsync();
-            product.Brand = brand;
+                product.ClassificationAttributeValues = classificationAttributeValues;
 
-            var supplier = await _supplierReadRepository.GetWhere(x => x.Code == productDto.Supplier.Code).FirstOrDefaultAsync();
-            product.Supplier = supplier;
-
-            var tags = new HashSet<Tag>();
-            foreach (var item in productDto.Tags)
-            {
-                var tag = await _tagReadRepository.GetWhere(x => x.Code == item.Code).FirstOrDefaultAsync();
-                tags.Add(tag);
-
-            }
-            product.Tags = tags;
-
-            var galleries = new HashSet<Gallery>();
-            foreach (var item in product.Galleries)
-            {
-                if (!(productDto.Galleries.Select(x => x.Code).Any(x => x == item.Code)))
+                var variants = new HashSet<Variant>();
+                foreach (var item in productDto.Variants)
                 {
-                    await _mediaService.DeleteGallery(item.Code);
+                    var variant = await _variantReadRepository.GetWhere(x => x.Code == item.Code).FirstOrDefaultAsync();
+                    variants.Add(variant);
                 }
-            }
 
-            foreach (var item in productDto.Files)
+                product.Variants = variants;
+
+                var variantItems = new HashSet<VariantItem>();
+                foreach (var item in productDto.VariantItems)
+                {
+                    if (product.VariantItems.Select(x => x.Code).Any(x => x == item.Code))
+                    {
+                        var modifiedVariantItem = await _variantItemService
+                            .Update(item,
+                                product.VariantItems.Where(x => x.Code == item.Code).Select(y => y.Galleries)
+                                    .FirstOrDefault(),
+                                product.VariantItems.Where(x => x.Code == item.Code)
+                                    .Select(y => y.ClassificationAttributeValues).FirstOrDefault());
+                        variantItems.Add(modifiedVariantItem);
+                    }
+                    else
+                    {
+                        var variantItem = await _variantItemService.Save(item);
+                        variantItems.Add(variantItem);
+                    }
+                }
+
+                product.VariantItems = variantItems;
+
+                var brand = await _brandReadRepository.GetWhere(x => x.Code == productDto.Brand.Code)
+                    .FirstOrDefaultAsync();
+                product.Brand = brand;
+
+                var supplier = await _supplierReadRepository.GetWhere(x => x.Code == productDto.Supplier.Code)
+                    .FirstOrDefaultAsync();
+                product.Supplier = supplier;
+
+                var tags = new HashSet<Tag>();
+                foreach (var item in productDto.Tags)
+                {
+                    var tag = await _tagReadRepository.GetWhere(x => x.Code == item.Code).FirstOrDefaultAsync();
+                    tags.Add(tag);
+                }
+
+                product.Tags = tags;
+
+                var galleries = new HashSet<Gallery>();
+                foreach (var item in product.Galleries)
+                {
+                    if (!(productDto.Galleries.Select(x => x.Code).Any(x => x == item.Code)))
+                    {
+                        await _mediaService.DeleteGallery(item.Code);
+                    }
+                    else
+                    {
+                        galleries.Add(item);
+                    }
+                }
+
+                var mediaFormats = await _mediaFormatReadRepository
+                    .GetWhere(x =>
+                        x.MediaFormatType == MediaFormatType.PRODUCT || x.MediaFormatType == MediaFormatType.ALL)
+                    .ToListAsync();
+
+                if (productDto.Files!=null && productDto.Files.Any())
+                {
+                    Parallel.ForEach(productDto.Files, item =>
+                    {
+                        var media = _mediaService.SaveGalleryForBinary(item, mediaFormats, true);
+                        galleries.Add(media);
+                    });
+                }
+
+                product.Galleries = galleries;
+
+                await _productWriteRepository.UpdateAsync(product, productDto.Id);
+
+                transaction.CommitAsync();
+            }
+            catch (Exception ex)
             {
-
-                var media = await _mediaService.SaveGalleryForBinary(item, MediaFormatType.PRODUCT,true);
-                galleries.Add(media);
+                transaction.RollbackAsync();
             }
-            product.Galleries = galleries;
-
-            await _productWriteRepository.UpdateAsync(product,productDto.Id);
         }
+
         #endregion
-
-
     }
 }
