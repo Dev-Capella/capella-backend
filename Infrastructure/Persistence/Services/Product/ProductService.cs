@@ -357,7 +357,7 @@ namespace Persistence.Services
 
                 product.Galleries = galleries;
 
-                await _productWriteRepository.UpdateAsync(product, productDto.Id);
+                await _productWriteRepository.UpdateAsyncModel(product);
 
                 transaction.CommitAsync();
             }

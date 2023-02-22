@@ -71,7 +71,7 @@ namespace Persistence.Services
 
         public async Task<ClassificationAttributeValue> Update(ClassificationAttributeValueDto classificationAttributeValueDto)
         {
-            ClassificationAttributeValue classificationAttributeValue = new();
+            ClassificationAttributeValue classificationAttributeValue = await _classificationAttributeValueReadRepository.GetWhere(x=> x.Code==classificationAttributeValueDto.Code).FirstOrDefaultAsync();
             classificationAttributeValue.Id = classificationAttributeValueDto.Id;
             classificationAttributeValue.Value = classificationAttributeValueDto.Value;
             classificationAttributeValue.Code = classificationAttributeValueDto.Code;
@@ -95,7 +95,7 @@ namespace Persistence.Services
                 classificationAttributeValue.Value = classificationAttributeValueDto.Value;
             }
 
-            var model = await _classificationAttributeValueWriteRepository.UpdateAsyncWithModel(classificationAttributeValue, classificationAttributeValueDto.Id);
+            var model = await _classificationAttributeValueWriteRepository.UpdateAsyncWithModel(classificationAttributeValue);
             return model;
         }
     }

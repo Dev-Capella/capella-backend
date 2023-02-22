@@ -105,6 +105,19 @@ namespace Persistence.Repositories
             await _context.SaveChangesAsync();
         }
 
+        public async Task UpdateAsyncModel(T model)
+        {
+            await Task.Run(() => { Table.Update(model); });
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task<T> UpdateAsyncWithModel(T model)
+        {
+            await Task.Run(() => { Table.Update(model); });
+            await _context.SaveChangesAsync();
+            return model;
+        }
+
         public async Task<T> UpdateAsyncWithModel(T model, int id)
         {
             try

@@ -17,6 +17,8 @@ namespace Application.Repositories
         Task<IDbContextTransaction> DbTransactional();
         Task<T> AddAsyncWithModel(T model);
         Task AddRangeAsync(IEnumerable<T> models);
+        Task UpdateAsyncModel(T model);
+        Task<T> UpdateAsyncWithModel(T model);
 
     }
 }

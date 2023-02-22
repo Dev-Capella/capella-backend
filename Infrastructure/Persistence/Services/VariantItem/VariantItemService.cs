@@ -84,7 +84,8 @@ namespace Persistence.Services
 
         public async Task<VariantItem> Update(VariantItemDto variantItemDto, ICollection<Gallery>? modelGalleries, ICollection<ClassificationAttributeValue>? modelClassificationAttributeValues)
         {
-            VariantItem variantItem = new();
+            VariantItem variantItem = await _variantItemReadRepository.GetWhere(x => x.Code == variantItemDto.Code)
+                .FirstOrDefaultAsync();
             variantItem.Id = variantItemDto.Id;
             variantItem.Name = variantItemDto.Name;
             variantItem.Code = variantItemDto.Code;
@@ -123,27 +124,34 @@ namespace Persistence.Services
             variantItem.ClassificationAttributeValues = classificationAttributeValues;
 
             var galleries = new HashSet<Gallery>();
-            foreach (var item in modelGalleries)
+            foreach (var item in variantItem.Galleries)
             {
                 if (!(variantItemDto.Galleries.Select(x => x.Code).Any(x => x == item.Code)))
                 {
-                   await _mediaService.DeleteGallery(item.Code);
+                    await _mediaService.DeleteGallery(item.Code);
+                }
+                else
+                {
+                    galleries.Add(item);
                 }
             }
-           
+
             var mediaFormats = await _mediaFormatReadRepository
-                .GetWhere(x => x.MediaFormatType==MediaFormatType.PRODUCT || x.MediaFormatType==MediaFormatType.ALL).ToListAsync();
-            if (variantItemDto.Files != null)
+                .GetWhere(x =>
+                    x.MediaFormatType == MediaFormatType.PRODUCT || x.MediaFormatType == MediaFormatType.ALL)
+                .ToListAsync();
+
+            if (variantItemDto.Files!=null && variantItemDto.Files.Any())
             {
-                foreach (var item in variantItemDto.Files)
+                Parallel.ForEach(variantItemDto.Files, item =>
                 {
-                    var media = _mediaService.SaveGalleryForBinary(item,mediaFormats, true);
+                    var media = _mediaService.SaveGalleryForBinary(item, mediaFormats, true);
                     galleries.Add(media);
-                }
+                });
             }
             variantItem.Galleries = galleries;
 
-            var model = await _variantItemWriteRepository.UpdateAsyncWithModel(variantItem, variantItemDto.Id);
+            var model = await _variantItemWriteRepository.UpdateAsyncWithModel(variantItem);
             return model;
         }
     }
