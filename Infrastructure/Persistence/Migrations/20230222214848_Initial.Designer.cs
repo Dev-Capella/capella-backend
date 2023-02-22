@@ -12,7 +12,7 @@ using Persistence.Contexts;
 namespace Persistence.Migrations
 {
     [DbContext(typeof(CapellaDbContext))]
-    [Migration("20230219204000_Initial")]
+    [Migration("20230222214848_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -225,24 +225,24 @@ namespace Persistence.Migrations
                         {
                             Id = 1,
                             Code = "alfa_beta",
-                            CreatedDate = new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5351),
-                            LastModifiedDate = new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5353),
+                            CreatedDate = new DateTime(2023, 2, 22, 21, 48, 48, 57, DateTimeKind.Utc).AddTicks(5280),
+                            LastModifiedDate = new DateTime(2023, 2, 22, 21, 48, 48, 57, DateTimeKind.Utc).AddTicks(5282),
                             Name = "Alfa Beta"
                         },
                         new
                         {
                             Id = 2,
                             Code = "june",
-                            CreatedDate = new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5355),
-                            LastModifiedDate = new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5356),
+                            CreatedDate = new DateTime(2023, 2, 22, 21, 48, 48, 57, DateTimeKind.Utc).AddTicks(5285),
+                            LastModifiedDate = new DateTime(2023, 2, 22, 21, 48, 48, 57, DateTimeKind.Utc).AddTicks(5285),
                             Name = "June"
                         },
                         new
                         {
                             Id = 3,
                             Code = "brooks_brothers",
-                            CreatedDate = new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5357),
-                            LastModifiedDate = new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5357),
+                            CreatedDate = new DateTime(2023, 2, 22, 21, 48, 48, 57, DateTimeKind.Utc).AddTicks(5287),
+                            LastModifiedDate = new DateTime(2023, 2, 22, 21, 48, 48, 57, DateTimeKind.Utc).AddTicks(5288),
                             Name = "Brooks Brothers"
                         });
                 });
@@ -290,9 +290,9 @@ namespace Persistence.Migrations
                         {
                             Id = 1,
                             Code = "clothes",
-                            CreatedDate = new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5633),
+                            CreatedDate = new DateTime(2023, 2, 22, 21, 48, 48, 57, DateTimeKind.Utc).AddTicks(5694),
                             Description = "Giyim",
-                            LastModifiedDate = new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5633),
+                            LastModifiedDate = new DateTime(2023, 2, 22, 21, 48, 48, 57, DateTimeKind.Utc).AddTicks(5695),
                             Level = 1,
                             Name = "Giyim"
                         },
@@ -300,9 +300,9 @@ namespace Persistence.Migrations
                         {
                             Id = 2,
                             Code = "man",
-                            CreatedDate = new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5649),
+                            CreatedDate = new DateTime(2023, 2, 22, 21, 48, 48, 57, DateTimeKind.Utc).AddTicks(5726),
                             Description = "Erkek",
-                            LastModifiedDate = new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5650),
+                            LastModifiedDate = new DateTime(2023, 2, 22, 21, 48, 48, 57, DateTimeKind.Utc).AddTicks(5727),
                             Level = 1,
                             Name = "Erkek",
                             ParentCategoryId = 1
@@ -311,9 +311,9 @@ namespace Persistence.Migrations
                         {
                             Id = 3,
                             Code = "woman",
-                            CreatedDate = new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5652),
+                            CreatedDate = new DateTime(2023, 2, 22, 21, 48, 48, 57, DateTimeKind.Utc).AddTicks(5730),
                             Description = "Kadın",
-                            LastModifiedDate = new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5652),
+                            LastModifiedDate = new DateTime(2023, 2, 22, 21, 48, 48, 57, DateTimeKind.Utc).AddTicks(5731),
                             Level = 2,
                             Name = "Kadın",
                             ParentCategoryId = 1
@@ -386,45 +386,45 @@ namespace Persistence.Migrations
                         {
                             Id = 1,
                             Code = "gender",
-                            CreatedDate = new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5662),
+                            CreatedDate = new DateTime(2023, 2, 22, 21, 48, 48, 57, DateTimeKind.Utc).AddTicks(5744),
                             DataType = 3,
-                            LastModifiedDate = new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5662),
+                            LastModifiedDate = new DateTime(2023, 2, 22, 21, 48, 48, 57, DateTimeKind.Utc).AddTicks(5745),
                             Name = "Cinsiyet"
                         },
                         new
                         {
                             Id = 2,
                             Code = "pattern",
-                            CreatedDate = new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5663),
+                            CreatedDate = new DateTime(2023, 2, 22, 21, 48, 48, 57, DateTimeKind.Utc).AddTicks(5849),
                             DataType = 0,
-                            LastModifiedDate = new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5664),
+                            LastModifiedDate = new DateTime(2023, 2, 22, 21, 48, 48, 57, DateTimeKind.Utc).AddTicks(5850),
                             Name = "Kalıp"
                         },
                         new
                         {
                             Id = 3,
                             Code = "stil",
-                            CreatedDate = new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5665),
+                            CreatedDate = new DateTime(2023, 2, 22, 21, 48, 48, 57, DateTimeKind.Utc).AddTicks(5853),
                             DataType = 4,
-                            LastModifiedDate = new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5665),
+                            LastModifiedDate = new DateTime(2023, 2, 22, 21, 48, 48, 57, DateTimeKind.Utc).AddTicks(5853),
                             Name = "Stil"
                         },
                         new
                         {
                             Id = 4,
                             Code = "warranty_period",
-                            CreatedDate = new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5666),
+                            CreatedDate = new DateTime(2023, 2, 22, 21, 48, 48, 57, DateTimeKind.Utc).AddTicks(5855),
                             DataType = 1,
-                            LastModifiedDate = new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5667),
+                            LastModifiedDate = new DateTime(2023, 2, 22, 21, 48, 48, 57, DateTimeKind.Utc).AddTicks(5856),
                             Name = "Garanti Süresi"
                         },
                         new
                         {
                             Id = 5,
                             Code = "international_sales",
-                            CreatedDate = new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5668),
+                            CreatedDate = new DateTime(2023, 2, 22, 21, 48, 48, 57, DateTimeKind.Utc).AddTicks(5858),
                             DataType = 2,
-                            LastModifiedDate = new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5668),
+                            LastModifiedDate = new DateTime(2023, 2, 22, 21, 48, 48, 57, DateTimeKind.Utc).AddTicks(5859),
                             Name = "Yurt Dışı Satış"
                         });
                 });
@@ -663,9 +663,9 @@ namespace Persistence.Migrations
                         {
                             Id = 1,
                             Code = "icon",
-                            CreatedDate = new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5859),
+                            CreatedDate = new DateTime(2023, 2, 22, 21, 48, 48, 57, DateTimeKind.Utc).AddTicks(5974),
                             Height = 100,
-                            LastModifiedDate = new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5860),
+                            LastModifiedDate = new DateTime(2023, 2, 22, 21, 48, 48, 57, DateTimeKind.Utc).AddTicks(5975),
                             MediaFormatType = 0,
                             Name = "100x100",
                             Width = 100
@@ -674,9 +674,9 @@ namespace Persistence.Migrations
                         {
                             Id = 2,
                             Code = "small",
-                            CreatedDate = new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5862),
+                            CreatedDate = new DateTime(2023, 2, 22, 21, 48, 48, 57, DateTimeKind.Utc).AddTicks(5978),
                             Height = 200,
-                            LastModifiedDate = new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5862),
+                            LastModifiedDate = new DateTime(2023, 2, 22, 21, 48, 48, 57, DateTimeKind.Utc).AddTicks(5979),
                             MediaFormatType = 0,
                             Name = "200x200",
                             Width = 200
@@ -685,9 +685,9 @@ namespace Persistence.Migrations
                         {
                             Id = 3,
                             Code = "thumbnail",
-                            CreatedDate = new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5864),
+                            CreatedDate = new DateTime(2023, 2, 22, 21, 48, 48, 57, DateTimeKind.Utc).AddTicks(5982),
                             Height = 300,
-                            LastModifiedDate = new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5864),
+                            LastModifiedDate = new DateTime(2023, 2, 22, 21, 48, 48, 57, DateTimeKind.Utc).AddTicks(5982),
                             MediaFormatType = 0,
                             Name = "300x300",
                             Width = 300
@@ -696,9 +696,9 @@ namespace Persistence.Migrations
                         {
                             Id = 4,
                             Code = "medium",
-                            CreatedDate = new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5866),
+                            CreatedDate = new DateTime(2023, 2, 22, 21, 48, 48, 57, DateTimeKind.Utc).AddTicks(5985),
                             Height = 400,
-                            LastModifiedDate = new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5866),
+                            LastModifiedDate = new DateTime(2023, 2, 22, 21, 48, 48, 57, DateTimeKind.Utc).AddTicks(5987),
                             MediaFormatType = 0,
                             Name = "400x400",
                             Width = 400
@@ -707,9 +707,9 @@ namespace Persistence.Migrations
                         {
                             Id = 5,
                             Code = "big",
-                            CreatedDate = new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5868),
+                            CreatedDate = new DateTime(2023, 2, 22, 21, 48, 48, 57, DateTimeKind.Utc).AddTicks(5989),
                             Height = 500,
-                            LastModifiedDate = new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5868),
+                            LastModifiedDate = new DateTime(2023, 2, 22, 21, 48, 48, 57, DateTimeKind.Utc).AddTicks(5990),
                             MediaFormatType = 0,
                             Name = "500x500",
                             Width = 500
@@ -718,9 +718,9 @@ namespace Persistence.Migrations
                         {
                             Id = 6,
                             Code = "huge",
-                            CreatedDate = new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5870),
+                            CreatedDate = new DateTime(2023, 2, 22, 21, 48, 48, 57, DateTimeKind.Utc).AddTicks(5992),
                             Height = 600,
-                            LastModifiedDate = new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5871),
+                            LastModifiedDate = new DateTime(2023, 2, 22, 21, 48, 48, 57, DateTimeKind.Utc).AddTicks(5993),
                             MediaFormatType = 0,
                             Name = "600x600",
                             Width = 600
@@ -729,9 +729,9 @@ namespace Persistence.Migrations
                         {
                             Id = 7,
                             Code = "zoom",
-                            CreatedDate = new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5872),
+                            CreatedDate = new DateTime(2023, 2, 22, 21, 48, 48, 57, DateTimeKind.Utc).AddTicks(5996),
                             Height = 700,
-                            LastModifiedDate = new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5873),
+                            LastModifiedDate = new DateTime(2023, 2, 22, 21, 48, 48, 57, DateTimeKind.Utc).AddTicks(5996),
                             MediaFormatType = 0,
                             Name = "700x700",
                             Width = 700
@@ -740,9 +740,9 @@ namespace Persistence.Migrations
                         {
                             Id = 8,
                             Code = "superzoom",
-                            CreatedDate = new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5874),
+                            CreatedDate = new DateTime(2023, 2, 22, 21, 48, 48, 57, DateTimeKind.Utc).AddTicks(5999),
                             Height = 800,
-                            LastModifiedDate = new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5874),
+                            LastModifiedDate = new DateTime(2023, 2, 22, 21, 48, 48, 57, DateTimeKind.Utc).AddTicks(6000),
                             MediaFormatType = 0,
                             Name = "800x800",
                             Width = 800
@@ -750,19 +750,19 @@ namespace Persistence.Migrations
                         new
                         {
                             Id = 9,
-                            Code = "original_product",
-                            CreatedDate = new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5876),
-                            LastModifiedDate = new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5876),
-                            MediaFormatType = 0,
+                            Code = "original",
+                            CreatedDate = new DateTime(2023, 2, 22, 21, 48, 48, 57, DateTimeKind.Utc).AddTicks(6002),
+                            LastModifiedDate = new DateTime(2023, 2, 22, 21, 48, 48, 57, DateTimeKind.Utc).AddTicks(6002),
+                            MediaFormatType = 4,
                             Name = "original"
                         },
                         new
                         {
                             Id = 10,
                             Code = "carousel_back",
-                            CreatedDate = new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5879),
+                            CreatedDate = new DateTime(2023, 2, 22, 21, 48, 48, 57, DateTimeKind.Utc).AddTicks(6005),
                             Height = 540,
-                            LastModifiedDate = new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5879),
+                            LastModifiedDate = new DateTime(2023, 2, 22, 21, 48, 48, 57, DateTimeKind.Utc).AddTicks(6005),
                             MediaFormatType = 1,
                             Name = "1920x540",
                             Width = 1920
@@ -771,9 +771,9 @@ namespace Persistence.Migrations
                         {
                             Id = 11,
                             Code = "carousel_front",
-                            CreatedDate = new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5880),
+                            CreatedDate = new DateTime(2023, 2, 22, 21, 48, 48, 57, DateTimeKind.Utc).AddTicks(6008),
                             Height = 378,
-                            LastModifiedDate = new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5881),
+                            LastModifiedDate = new DateTime(2023, 2, 22, 21, 48, 48, 57, DateTimeKind.Utc).AddTicks(6009),
                             MediaFormatType = 1,
                             Name = "672x378",
                             Width = 672
@@ -817,8 +817,8 @@ namespace Persistence.Migrations
                             Id = 1,
                             ClassificationId = 1,
                             Code = "male",
-                            CreatedDate = new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5706),
-                            LastModifiedDate = new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5706),
+                            CreatedDate = new DateTime(2023, 2, 22, 21, 48, 48, 57, DateTimeKind.Utc).AddTicks(5928),
+                            LastModifiedDate = new DateTime(2023, 2, 22, 21, 48, 48, 57, DateTimeKind.Utc).AddTicks(5929),
                             Name = "Erkek"
                         },
                         new
@@ -826,8 +826,8 @@ namespace Persistence.Migrations
                             Id = 2,
                             ClassificationId = 1,
                             Code = "female",
-                            CreatedDate = new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5708),
-                            LastModifiedDate = new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5708),
+                            CreatedDate = new DateTime(2023, 2, 22, 21, 48, 48, 57, DateTimeKind.Utc).AddTicks(5931),
+                            LastModifiedDate = new DateTime(2023, 2, 22, 21, 48, 48, 57, DateTimeKind.Utc).AddTicks(5932),
                             Name = "Kadın"
                         },
                         new
@@ -835,8 +835,8 @@ namespace Persistence.Migrations
                             Id = 3,
                             ClassificationId = 3,
                             Code = "evening_dresses",
-                            CreatedDate = new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5709),
-                            LastModifiedDate = new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5710),
+                            CreatedDate = new DateTime(2023, 2, 22, 21, 48, 48, 57, DateTimeKind.Utc).AddTicks(5934),
+                            LastModifiedDate = new DateTime(2023, 2, 22, 21, 48, 48, 57, DateTimeKind.Utc).AddTicks(5935),
                             Name = "Abiye"
                         },
                         new
@@ -844,8 +844,8 @@ namespace Persistence.Migrations
                             Id = 4,
                             ClassificationId = 3,
                             Code = "night",
-                            CreatedDate = new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5711),
-                            LastModifiedDate = new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5712),
+                            CreatedDate = new DateTime(2023, 2, 22, 21, 48, 48, 57, DateTimeKind.Utc).AddTicks(5938),
+                            LastModifiedDate = new DateTime(2023, 2, 22, 21, 48, 48, 57, DateTimeKind.Utc).AddTicks(5938),
                             Name = "Gece"
                         },
                         new
@@ -853,8 +853,8 @@ namespace Persistence.Migrations
                             Id = 5,
                             ClassificationId = 3,
                             Code = "daily",
-                            CreatedDate = new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5713),
-                            LastModifiedDate = new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5713),
+                            CreatedDate = new DateTime(2023, 2, 22, 21, 48, 48, 57, DateTimeKind.Utc).AddTicks(5940),
+                            LastModifiedDate = new DateTime(2023, 2, 22, 21, 48, 48, 57, DateTimeKind.Utc).AddTicks(5941),
                             Name = "Günlük"
                         });
                 });
@@ -894,27 +894,27 @@ namespace Persistence.Migrations
                         {
                             Id = 1,
                             Code = "product_created",
-                            CreatedDate = new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(6006),
+                            CreatedDate = new DateTime(2023, 2, 22, 21, 48, 48, 57, DateTimeKind.Utc).AddTicks(6200),
                             Description = "Ürün oluşturmak için gerekli izin",
-                            LastModifiedDate = new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(6006),
+                            LastModifiedDate = new DateTime(2023, 2, 22, 21, 48, 48, 57, DateTimeKind.Utc).AddTicks(6201),
                             Name = "Ürün Oluşturma Yetkisi"
                         },
                         new
                         {
                             Id = 2,
                             Code = "product_deleted",
-                            CreatedDate = new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(6008),
+                            CreatedDate = new DateTime(2023, 2, 22, 21, 48, 48, 57, DateTimeKind.Utc).AddTicks(6203),
                             Description = "Ürün silmek için gerekli izin",
-                            LastModifiedDate = new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(6008),
+                            LastModifiedDate = new DateTime(2023, 2, 22, 21, 48, 48, 57, DateTimeKind.Utc).AddTicks(6204),
                             Name = "Ürün Silme Yetkisi"
                         },
                         new
                         {
                             Id = 3,
                             Code = "product_updated",
-                            CreatedDate = new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(6009),
+                            CreatedDate = new DateTime(2023, 2, 22, 21, 48, 48, 57, DateTimeKind.Utc).AddTicks(6205),
                             Description = "Ürün güncelleme için gerekli izin",
-                            LastModifiedDate = new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(6010),
+                            LastModifiedDate = new DateTime(2023, 2, 22, 21, 48, 48, 57, DateTimeKind.Utc).AddTicks(6206),
                             Name = "Ürün Güncelleme Yetkisi"
                         });
                 });
@@ -1006,9 +1006,9 @@ namespace Persistence.Migrations
                         {
                             Id = 1,
                             Code = "admin",
-                            CreatedDate = new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(6046),
+                            CreatedDate = new DateTime(2023, 2, 22, 21, 48, 48, 57, DateTimeKind.Utc).AddTicks(6264),
                             IsActive = true,
-                            LastModifiedDate = new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(6046),
+                            LastModifiedDate = new DateTime(2023, 2, 22, 21, 48, 48, 57, DateTimeKind.Utc).AddTicks(6265),
                             Name = "admin"
                         });
                 });
@@ -1070,10 +1070,10 @@ namespace Persistence.Migrations
                             Address = "Atatürk Mah. Orhan Veli Caddesi No:6 34522 Esenyurt İstanbul Türkiye",
                             Code = "supplier_1",
                             Company = "Ozon Tekstil",
-                            CreatedDate = new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5997),
+                            CreatedDate = new DateTime(2023, 2, 22, 21, 48, 48, 57, DateTimeKind.Utc).AddTicks(6187),
                             Email = "ozontekstil@gmail.com",
                             EmployeeName = "Duygu Sivrioğlu",
-                            LastModifiedDate = new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5998),
+                            LastModifiedDate = new DateTime(2023, 2, 22, 21, 48, 48, 57, DateTimeKind.Utc).AddTicks(6188),
                             Name = "Elbise Tedarikçim",
                             TaxNumber = "123456789",
                             Telephone = "0212 886 69 86"
@@ -1111,24 +1111,24 @@ namespace Persistence.Migrations
                         {
                             Id = 1,
                             Code = "new_member_special",
-                            CreatedDate = new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5911),
-                            LastModifiedDate = new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5911),
+                            CreatedDate = new DateTime(2023, 2, 22, 21, 48, 48, 57, DateTimeKind.Utc).AddTicks(6051),
+                            LastModifiedDate = new DateTime(2023, 2, 22, 21, 48, 48, 57, DateTimeKind.Utc).AddTicks(6052),
                             Name = "Yeni Üyelere Özel"
                         },
                         new
                         {
                             Id = 2,
                             Code = "premium_member_special",
-                            CreatedDate = new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5913),
-                            LastModifiedDate = new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5913),
+                            CreatedDate = new DateTime(2023, 2, 22, 21, 48, 48, 57, DateTimeKind.Utc).AddTicks(6054),
+                            LastModifiedDate = new DateTime(2023, 2, 22, 21, 48, 48, 57, DateTimeKind.Utc).AddTicks(6055),
                             Name = "Premium Üyelere Özel"
                         },
                         new
                         {
                             Id = 3,
                             Code = "super_discount",
-                            CreatedDate = new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5914),
-                            LastModifiedDate = new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5915),
+                            CreatedDate = new DateTime(2023, 2, 22, 21, 48, 48, 57, DateTimeKind.Utc).AddTicks(6057),
+                            LastModifiedDate = new DateTime(2023, 2, 22, 21, 48, 48, 57, DateTimeKind.Utc).AddTicks(6057),
                             Name = "Süper İndirim"
                         });
                 });
@@ -1243,16 +1243,16 @@ namespace Persistence.Migrations
                         {
                             Id = 1,
                             Code = "size",
-                            CreatedDate = new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5922),
-                            LastModifiedDate = new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5923),
+                            CreatedDate = new DateTime(2023, 2, 22, 21, 48, 48, 57, DateTimeKind.Utc).AddTicks(6072),
+                            LastModifiedDate = new DateTime(2023, 2, 22, 21, 48, 48, 57, DateTimeKind.Utc).AddTicks(6073),
                             Name = "Beden"
                         },
                         new
                         {
                             Id = 2,
                             Code = "color",
-                            CreatedDate = new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5924),
-                            LastModifiedDate = new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5924),
+                            CreatedDate = new DateTime(2023, 2, 22, 21, 48, 48, 57, DateTimeKind.Utc).AddTicks(6075),
+                            LastModifiedDate = new DateTime(2023, 2, 22, 21, 48, 48, 57, DateTimeKind.Utc).AddTicks(6075),
                             Name = "Renk"
                         });
                 });
@@ -1330,8 +1330,8 @@ namespace Persistence.Migrations
                         {
                             Id = 1,
                             Code = "s",
-                            CreatedDate = new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5965),
-                            LastModifiedDate = new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5965),
+                            CreatedDate = new DateTime(2023, 2, 22, 21, 48, 48, 57, DateTimeKind.Utc).AddTicks(6136),
+                            LastModifiedDate = new DateTime(2023, 2, 22, 21, 48, 48, 57, DateTimeKind.Utc).AddTicks(6137),
                             Name = "S",
                             VariantId = 1
                         },
@@ -1339,8 +1339,8 @@ namespace Persistence.Migrations
                         {
                             Id = 2,
                             Code = "m",
-                            CreatedDate = new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5967),
-                            LastModifiedDate = new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5968),
+                            CreatedDate = new DateTime(2023, 2, 22, 21, 48, 48, 57, DateTimeKind.Utc).AddTicks(6139),
+                            LastModifiedDate = new DateTime(2023, 2, 22, 21, 48, 48, 57, DateTimeKind.Utc).AddTicks(6140),
                             Name = "M",
                             VariantId = 1
                         },
@@ -1348,8 +1348,8 @@ namespace Persistence.Migrations
                         {
                             Id = 3,
                             Code = "l",
-                            CreatedDate = new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5971),
-                            LastModifiedDate = new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5971),
+                            CreatedDate = new DateTime(2023, 2, 22, 21, 48, 48, 57, DateTimeKind.Utc).AddTicks(6143),
+                            LastModifiedDate = new DateTime(2023, 2, 22, 21, 48, 48, 57, DateTimeKind.Utc).AddTicks(6144),
                             Name = "L",
                             VariantId = 1
                         },
@@ -1357,8 +1357,8 @@ namespace Persistence.Migrations
                         {
                             Id = 4,
                             Code = "blue",
-                            CreatedDate = new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5973),
-                            LastModifiedDate = new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5973),
+                            CreatedDate = new DateTime(2023, 2, 22, 21, 48, 48, 57, DateTimeKind.Utc).AddTicks(6146),
+                            LastModifiedDate = new DateTime(2023, 2, 22, 21, 48, 48, 57, DateTimeKind.Utc).AddTicks(6147),
                             Name = "Mavi",
                             VariantId = 2
                         },
@@ -1366,8 +1366,8 @@ namespace Persistence.Migrations
                         {
                             Id = 5,
                             Code = "black",
-                            CreatedDate = new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5974),
-                            LastModifiedDate = new DateTime(2023, 2, 19, 20, 39, 59, 415, DateTimeKind.Utc).AddTicks(5975),
+                            CreatedDate = new DateTime(2023, 2, 22, 21, 48, 48, 57, DateTimeKind.Utc).AddTicks(6149),
+                            LastModifiedDate = new DateTime(2023, 2, 22, 21, 48, 48, 57, DateTimeKind.Utc).AddTicks(6150),
                             Name = "Siyah",
                             VariantId = 2
                         });
