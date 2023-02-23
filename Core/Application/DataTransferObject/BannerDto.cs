@@ -10,7 +10,7 @@ namespace Application.DataTransferObject
 {
     public class BannerDto: BaseDto
     {
-        public string Code { get; set; }
+        public string? Code { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
         public string Text { get; set; }

@@ -51,7 +51,9 @@ namespace Persistence.Services
 
         public async Task<BannerDto> GetBannerByCode(string code)
         {
-            var banner = await _bannerReadRepository.GetWhere(x => x.Code == code).FirstOrDefaultAsync();
+            var banner = await _bannerReadRepository.GetWhere(x => x.Code == code)
+                .Include(x=> x.Gallery)
+                .ThenInclude(galleries => galleries.Medias.Where(m => m.MediaFormat.Code == "original")).FirstOrDefaultAsync();
             var bannerDto = _mapper.Map<BannerDto>(banner);
             return bannerDto;
         }
