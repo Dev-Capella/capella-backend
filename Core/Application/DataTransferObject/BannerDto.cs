@@ -17,7 +17,7 @@ namespace Application.DataTransferObject
         public string Link { get; set; }
         public bool Active { get; set; }
         public BannerType BannerType { get; set; }
-        public FileDto File { get; set; }
+        public FileDto? File { get; set; }
         
         public GalleryDto? Gallery { get; set; }
     }
