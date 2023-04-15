@@ -17,6 +17,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Application.Services.Customer;
+using Application.Services.Mail;
+using Infrastructure.Services;
+using Persistence.Services.Customer;
 
 namespace Persistence
 {
@@ -76,6 +80,8 @@ namespace Persistence
             services.AddScoped<IBannerWriteRepository, BannerWriteRepository>();
             services.AddScoped<IGalleryReadRepository, GalleryReadRepository>();
             services.AddScoped<IGalleryWriteRepository, GalleryWriteRepository>();
+            services.AddScoped<ICustomerReadRepository, CustomerReadRepository>();
+            services.AddScoped<ICustomerWriteRepository, CustomerWriteRepository>();
             #endregion
 
             #region Service Registration
@@ -99,6 +105,8 @@ namespace Persistence
             services.AddScoped<ISupplierService, SupplierService>();
             services.AddScoped<IBannerService, BannerService>();
             services.AddScoped<ITokenService, TokenService>();
+            services.AddScoped<IMailService, MailService>();
+            services.AddScoped<ICustomerService, CustomerService>();
             #endregion
 
             
