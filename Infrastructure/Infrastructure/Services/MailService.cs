@@ -1,5 +1,7 @@
 using System.Net;
 using System.Net.Mail;
+using System.Text;
+using System.Web;
 using Application.Services.Mail;
 using Microsoft.Extensions.Configuration;
 
@@ -13,13 +15,10 @@ public class MailService: IMailService
     {
         _configuration = configuration;
     }
-    public async Task SendMessageAsync(string[] tos, string subject, string body, bool isBodyHtml = true)
+    public async Task SendMailAsync(string to, string subject, string body, bool isBodyHtml = true)
     {
         MailMessage mail = new();
-        foreach (var to in tos)
-        {
-            mail.To.Add(to);
-        }
+        mail.To.Add(to);
         mail.Subject = subject;
         mail.IsBodyHtml = isBodyHtml;
         mail.Body = body;
@@ -32,5 +31,20 @@ public class MailService: IMailService
         smtpClient.EnableSsl = true;
         smtpClient.Host = _configuration["Mail:Host"];
         await smtpClient.SendMailAsync(mail);
+    }
+
+    public async Task SendEmailVerificationMailAsync(string to, string userId, string emailVerificationToken)
+    {
+        StringBuilder mail = new();
+        mail.Append("<b>E-posta adresinizi doğrulayın</b><br>" +
+                    "Bu e-posta adresinizin aktif ve size ait olduğunu doğrulamak için lütfen aşağıdaki linke tıklayınız<br>" +
+                    "<a target=\"_blank\" href=\"");
+        mail.Append(HttpUtility.HtmlEncode(_configuration["ReactClientURL"]));
+        mail.Append(HttpUtility.HtmlEncode(userId));
+        mail.Append("/");
+        mail.Append(HttpUtility.HtmlEncode(emailVerificationToken));
+        mail.Append("\">Doğrula</a>");
+
+        await SendMailAsync(to, "E-posta adresinizi doğrulayın", mail.ToString());
     }
 }

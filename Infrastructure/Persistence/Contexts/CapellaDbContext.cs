@@ -7,7 +7,7 @@ namespace Persistence.Contexts
 {
     public class CapellaDbContext : DbContext
     {
-        public CapellaDbContext(DbContextOptions options) : base(options)
+        public CapellaDbContext(DbContextOptions<CapellaDbContext> options) : base(options)
         {
         }
 

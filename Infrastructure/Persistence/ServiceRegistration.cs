@@ -17,9 +17,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Application.Services.Authenticate;
 using Application.Services.Customer;
 using Application.Services.Mail;
+using Domain.Entities.Identity;
 using Infrastructure.Services;
+using Microsoft.AspNetCore.Identity;
+using Persistence.Services.Authenticate;
 using Persistence.Services.Customer;
 
 namespace Persistence
@@ -30,6 +34,8 @@ namespace Persistence
         {
             #region Connection String
             services.AddDbContext<CapellaDbContext>(options => options.UseNpgsql(Configuration.ConnectionString));
+            services.AddDbContext<CapellaIdentityDbContext>(options => options.UseNpgsql(Configuration.ConnectionString));
+            services.AddIdentity<AppUser, AppRole>().AddEntityFrameworkStores<CapellaIdentityDbContext>().AddDefaultTokenProviders();
             #endregion
 
             #region Repository Registration
@@ -107,9 +113,11 @@ namespace Persistence
             services.AddScoped<ITokenService, TokenService>();
             services.AddScoped<IMailService, MailService>();
             services.AddScoped<ICustomerService, CustomerService>();
+            services.AddScoped<IAuthenticateService, AuthenticateService>();
+
             #endregion
 
-            
+
         }
     }
 }
