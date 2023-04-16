@@ -1,3 +1,4 @@
+using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 using Application.DataTransferObject;
 using Application.Services.Authenticate;
@@ -5,6 +6,8 @@ using Application.Services.Mail;
 using Domain.Entities.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.WebUtilities;
+using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
 
 namespace Persistence.Services.Authenticate;
 
@@ -12,11 +15,13 @@ public class AuthenticateService: IAuthenticateService
 {
     private UserManager<AppUser> _userManager;
     private IMailService _mailService;
+    private IConfiguration _configuration;
 
-    public AuthenticateService(UserManager<AppUser> userManager, IMailService mailService)
+    public AuthenticateService(UserManager<AppUser> userManager, IMailService mailService, IConfiguration configuration)
     {
         _userManager = userManager;
         _mailService = mailService;
+        _configuration = configuration;
     }
     
     public async Task EmailVerificationAsync(string email)
@@ -78,5 +83,39 @@ public class AuthenticateService: IAuthenticateService
                 throw new ApplicationException("Kullanıcı oluşturulurken bir hata meydana geldi.");
             }
         }
+    }
+    public async Task<StorefrontTokenDto> Login(StorefrontLoginDto storefrontLoginDto)
+    {
+       var user = await _userManager.FindByEmailAsync(storefrontLoginDto.Email);
+       if (user == null)
+       {
+           throw new ApplicationException("E-Posta veya şifre hatalıdır.");
+       }
+       var result = await _userManager.CheckPasswordAsync(user, storefrontLoginDto.Password);
+       if (result)
+       {
+           StorefrontTokenDto storefrontTokenDto = CreateAccessToken();
+           return storefrontTokenDto;
+       }
+       else
+       {
+           throw new ApplicationException("E-Posta veya şifre hatalıdır.");
+       }
+    }
+
+    public StorefrontTokenDto CreateAccessToken()
+    {
+        StorefrontTokenDto storefrontTokenDto = new StorefrontTokenDto();
+        SymmetricSecurityKey securityKey = new(Encoding.UTF8.GetBytes(_configuration["Token:SecurityKey"]));
+        SigningCredentials signingCredentials = new(securityKey, SecurityAlgorithms.HmacSha256);
+        JwtSecurityToken securityToken = new(
+            audience: _configuration["Token:Auidience"],
+            issuer: _configuration["Token:Issuer"],
+            expires: DateTime.UtcNow.AddDays(7),
+            signingCredentials: signingCredentials
+        );
+        JwtSecurityTokenHandler tokenHandler = new();
+        storefrontTokenDto.AccessToken = tokenHandler.WriteToken(securityToken);
+        return storefrontTokenDto;
     }
 }

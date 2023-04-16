@@ -8,6 +8,7 @@ using Domain.Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using StorefrontAPI.Utilities.ResponseData;
 
 namespace StorefrontAPI.Controllers
 {
@@ -26,7 +27,11 @@ namespace StorefrontAPI.Controllers
         public async Task<IActionResult> EmailVerification([FromBody] EmailVerificationDto emailVerificationDto)
         {
             await _authenticateService.EmailVerificationAsync(emailVerificationDto.Email);
-            return Ok();
+            var response = new ServiceResponseData()
+            {
+                Status = ProcessStatus.SUCCESS
+            };
+            return Ok(response);
         }
         
         [HttpPost("/verify-email")]
@@ -34,21 +39,35 @@ namespace StorefrontAPI.Controllers
         {
             var result = await _authenticateService.EmailVerificationConfirm(emailVerificationConfirmDto.EmailVerificationToken,
                 emailVerificationConfirmDto.UserId);
-            if (result)
+            var response = new ServiceResponseData()
             {
-                return Ok();
-            }
-            else
-            {
-                return BadRequest();
-            }
+                Status = ProcessStatus.SUCCESS,
+                Data = result
+            };
+            return Ok(response);
         }
         
         [HttpPost("/register/{userId}")]
         public async Task<IActionResult> Register([FromBody] RegisterRequestDto registerRequestDto, [FromRoute] string userId)
         {
             await _authenticateService.Register(registerRequestDto, userId);
-            return Ok();
+            var response = new ServiceResponseData()
+            {
+                Status = ProcessStatus.SUCCESS,
+            };
+            return Ok(response);
+        }
+        
+        [HttpPost("/login")]
+        public async Task<IActionResult> Login([FromBody] StorefrontLoginDto storefrontLoginDto)
+        {
+            var storefrontTokenDto = await _authenticateService.Login(storefrontLoginDto);
+            var response = new ServiceResponseData()
+            {
+                Status = ProcessStatus.SUCCESS,
+                Data = storefrontTokenDto
+            };
+            return Ok(response);
         }
     }
 }

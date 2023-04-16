@@ -8,4 +8,6 @@ public interface IAuthenticateService
     Task EmailVerificationAsync(string email);
     Task<bool> EmailVerificationConfirm(string emailVerificationToken, string userId);
     Task Register(RegisterRequestDto registerRequestDto, string userId);
+    Task<StorefrontTokenDto> Login(StorefrontLoginDto storefrontLoginDto);
+    StorefrontTokenDto CreateAccessToken();
 }

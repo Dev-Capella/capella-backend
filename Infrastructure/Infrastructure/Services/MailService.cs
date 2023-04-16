@@ -40,6 +40,8 @@ public class MailService: IMailService
                     "Bu e-posta adresinizin aktif ve size ait olduğunu doğrulamak için lütfen aşağıdaki linke tıklayınız<br>" +
                     "<a target=\"_blank\" href=\"");
         mail.Append(HttpUtility.HtmlEncode(_configuration["ReactClientURL"]));
+        mail.Append("register");
+        mail.Append("/");
         mail.Append(HttpUtility.HtmlEncode(userId));
         mail.Append("/");
         mail.Append(HttpUtility.HtmlEncode(emailVerificationToken));
