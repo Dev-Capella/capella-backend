@@ -2,6 +2,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Cryptography;
 using System.Text;
 using Application.DataTransferObject;
+using Application.Helpers;
 using Application.Services.Authenticate;
 using Application.Services.Mail;
 using Domain.Entities.Identity;
@@ -47,8 +48,7 @@ public class AuthenticateService: IAuthenticateService
             throw new ApplicationException("Bu e-posta kayıtlıdır.");
         }
         var emailVerificationToken = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-        byte[] tokenBytes = Encoding.UTF8.GetBytes(emailVerificationToken);
-        emailVerificationToken = WebEncoders.Base64UrlEncode(tokenBytes);
+        emailVerificationToken = emailVerificationToken.UrlEncode();
         await _mailService.SendEmailVerificationMailAsync(user.Email,user.Id,emailVerificationToken);
 
     }
@@ -57,15 +57,58 @@ public class AuthenticateService: IAuthenticateService
         var appuser = await _userManager.FindByIdAsync(userId);
         if (appuser != null)
         {
-            byte[] tokenBytes = WebEncoders.Base64UrlDecode(emailVerificationToken);
-            var token = Encoding.UTF8.GetString(tokenBytes);
-
+            emailVerificationToken = emailVerificationToken.UrlDecode();
             return await _userManager.VerifyUserTokenAsync(appuser, _userManager.Options.Tokens.EmailConfirmationTokenProvider,
-                "EmailConfirmation", token);     
+                "EmailConfirmation", emailVerificationToken);     
         }
         return false;
     }
-    
+
+    public async Task PasswordResetAsync(string email)
+    {
+        var user = await _userManager.FindByEmailAsync(email);
+        if (user != null)
+        {
+            string resetToken = await _userManager.GeneratePasswordResetTokenAsync(user);
+            resetToken = resetToken.UrlEncode();
+            await _mailService.SendPasswordResetMailAsync(user.Email,user.Id,resetToken);
+        }
+    }
+
+    public async Task<bool> VerifyResetPasswordToken(string resetPasswordToken, string userId)
+    {
+        var appuser = await _userManager.FindByIdAsync(userId);
+        if (appuser != null)
+        {
+            resetPasswordToken = resetPasswordToken.UrlDecode();
+            return await _userManager.VerifyUserTokenAsync(appuser, _userManager.Options.Tokens.PasswordResetTokenProvider,
+                "ResetPassword", resetPasswordToken);     
+        }
+        return false;
+    }
+
+    public async Task UpdatePasswordAsync(string userId, string resetToken, string newPassword, string confirmPassword)
+    {
+        if (!newPassword.Equals(confirmPassword))
+        {
+            throw new ApplicationException("Girilen şifreler eşleşmemektedir.");
+        }
+        var appuser = await _userManager.FindByIdAsync(userId);
+        if (appuser != null)
+        {
+            resetToken = resetToken.UrlDecode();
+            var result = await _userManager.ResetPasswordAsync(appuser, resetToken, newPassword);
+            if (result.Succeeded)
+            {
+                await _userManager.UpdateSecurityStampAsync(appuser);
+            }
+            else
+            {
+                throw new ApplicationException("Şifre değiştirilirken bir sorun oluştu");
+            }
+        }
+    }
+
     public async Task Register(RegisterRequestDto registerRequestDto,string userId)
     {
         var appuser = await _userManager.FindByIdAsync(userId);

@@ -47,6 +47,41 @@ namespace StorefrontAPI.Controllers
             return Ok(response);
         }
         
+        [HttpPost("/password-reset")]
+        public async Task<IActionResult> PasswordReset([FromBody] ResetPasswordDto resetPasswordDto)
+        {
+            await _authenticateService.PasswordResetAsync(resetPasswordDto.Email);
+            var response = new ServiceResponseData()
+            {
+                Status = ProcessStatus.SUCCESS
+            };
+            return Ok(response);
+        }
+        
+        [HttpPost("/verify-reset-password")]
+        public async Task<IActionResult> VerifyResetPasswordToken([FromBody] VerifyResetPasswordDto verifyResetPassword)
+        {
+            var result = await _authenticateService.VerifyResetPasswordToken(verifyResetPassword.ResetPasswordToken,
+                verifyResetPassword.UserId);
+            var response = new ServiceResponseData()
+            {
+                Status = ProcessStatus.SUCCESS,
+                Data = result
+            };
+            return Ok(response);
+        }
+        
+        [HttpPost("/update-password")]
+        public async Task<IActionResult> UpdatePassword([FromBody] UpdatePasswordDto updatePasswordDto)
+        {
+            await _authenticateService.UpdatePasswordAsync(updatePasswordDto.UserId, updatePasswordDto.ResetPasswordToken, updatePasswordDto.Password, updatePasswordDto.PasswordConfirm);
+            var response = new ServiceResponseData()
+            {
+                Status = ProcessStatus.SUCCESS,
+            };
+            return Ok(response);
+        }
+        
         [HttpPost("/register/{userId}")]
         public async Task<IActionResult> Register([FromBody] RegisterRequestDto registerRequestDto, [FromRoute] string userId)
         {

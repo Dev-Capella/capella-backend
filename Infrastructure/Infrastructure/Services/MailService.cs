@@ -47,6 +47,23 @@ public class MailService: IMailService
         mail.Append(HttpUtility.HtmlEncode(emailVerificationToken));
         mail.Append("\">Doğrula</a>");
 
-        await SendMailAsync(to, "E-posta adresinizi doğrulayın", mail.ToString());
+        await SendMailAsync(to, "Capella.com | Email Doğrulama", mail.ToString());
+    }
+
+    public async Task SendPasswordResetMailAsync(string to, string userId, string resetPasswordToken)
+    {
+        StringBuilder mail = new();
+        mail.Append("<b>E-posta adresinizi doğrulayın</b><br>" +
+                    "Şifre yenileme talebini aldık. 'Şifremi Güncelle' butonuna tıklayarak yeni şifreni belirleyebilirsin.<br>" +
+                    "<a target=\"_blank\" href=\"");
+        mail.Append(HttpUtility.HtmlEncode(_configuration["ReactClientURL"]));
+        mail.Append("reset-password");
+        mail.Append("/");
+        mail.Append(HttpUtility.HtmlEncode(userId));
+        mail.Append("/");
+        mail.Append(HttpUtility.HtmlEncode(resetPasswordToken));
+        mail.Append("\">Şifremi Güncelle</a>");
+
+        await SendMailAsync(to, "Capella.com | Şifremi Unuttum", mail.ToString());
     }
 }
