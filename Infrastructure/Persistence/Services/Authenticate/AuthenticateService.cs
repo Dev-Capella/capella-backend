@@ -7,6 +7,7 @@ using Application.Services.Mail;
 using Domain.Entities.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.WebUtilities;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 
@@ -110,6 +111,27 @@ public class AuthenticateService: IAuthenticateService
        {
            throw new ApplicationException("E-Posta veya şifre hatalıdır.");
        }
+    }
+
+    public async Task<StorefrontTokenDto> RefreshTokenLoginAsync(string refreshToken)
+    {
+        AppUser? appUser = await _userManager.Users.FirstOrDefaultAsync(u => u.RefreshToken == refreshToken);
+        if (appUser != null && appUser?.RefreshTokenEndTime > DateTime.UtcNow)
+        {
+            StorefrontTokenDto storefrontTokenDto = CreateAccessToken();
+            JwtSecurityTokenHandler handler = new JwtSecurityTokenHandler();
+            if (handler.CanReadToken(storefrontTokenDto.AccessToken))
+            {
+                JwtSecurityToken token = handler.ReadJwtToken(storefrontTokenDto.AccessToken);
+                DateTime expiration = token.ValidTo;
+                await UpdateRefreshToken(storefrontTokenDto.RefreshToken, appUser, expiration);
+            }
+           
+            return storefrontTokenDto;
+        } else
+        {
+            throw new ApplicationException("Kullanıcı bulunamadı");   
+        }
     }
 
     public StorefrontTokenDto CreateAccessToken()

@@ -69,5 +69,19 @@ namespace StorefrontAPI.Controllers
             };
             return Ok(response);
         }
+        
+        [HttpPost("/refresh-token-login")]
+        public async Task<IActionResult> RefreshTokenLogin([FromBody] RefreshTokenDto refreshTokenDto)
+        {
+            var storefrontTokenDto = await _authenticateService.RefreshTokenLoginAsync(refreshTokenDto.RefreshToken);
+            var response = new ServiceResponseData()
+            {
+                Status = ProcessStatus.SUCCESS,
+                Data = storefrontTokenDto
+            };
+            return Ok(response);
+        }
+        
+        
     }
 }

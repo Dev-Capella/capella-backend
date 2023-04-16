@@ -9,6 +9,7 @@ public interface IAuthenticateService
     Task<bool> EmailVerificationConfirm(string emailVerificationToken, string userId);
     Task Register(RegisterRequestDto registerRequestDto, string userId);
     Task<StorefrontTokenDto> Login(StorefrontLoginDto storefrontLoginDto);
+    Task<StorefrontTokenDto> RefreshTokenLoginAsync(string refreshToken);
     StorefrontTokenDto CreateAccessToken();
     string CreateRefreshToken();
     Task UpdateRefreshToken(string refreshToken, AppUser appUser, DateTime accessTokenExpire);
