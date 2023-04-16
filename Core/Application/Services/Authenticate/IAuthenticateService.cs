@@ -10,4 +10,6 @@ public interface IAuthenticateService
     Task Register(RegisterRequestDto registerRequestDto, string userId);
     Task<StorefrontTokenDto> Login(StorefrontLoginDto storefrontLoginDto);
     StorefrontTokenDto CreateAccessToken();
+    string CreateRefreshToken();
+    Task UpdateRefreshToken(string refreshToken, AppUser appUser, DateTime accessTokenExpire);
 }

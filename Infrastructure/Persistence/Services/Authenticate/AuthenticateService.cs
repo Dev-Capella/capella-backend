@@ -1,4 +1,5 @@
 using System.IdentityModel.Tokens.Jwt;
+using System.Security.Cryptography;
 using System.Text;
 using Application.DataTransferObject;
 using Application.Services.Authenticate;
@@ -95,6 +96,14 @@ public class AuthenticateService: IAuthenticateService
        if (result)
        {
            StorefrontTokenDto storefrontTokenDto = CreateAccessToken();
+           JwtSecurityTokenHandler handler = new JwtSecurityTokenHandler();
+           if (handler.CanReadToken(storefrontTokenDto.AccessToken))
+           {
+               JwtSecurityToken token = handler.ReadJwtToken(storefrontTokenDto.AccessToken);
+               DateTime expiration = token.ValidTo;
+               await UpdateRefreshToken(storefrontTokenDto.RefreshToken, user, expiration);
+           }
+           
            return storefrontTokenDto;
        }
        else
@@ -112,10 +121,34 @@ public class AuthenticateService: IAuthenticateService
             audience: _configuration["Token:Auidience"],
             issuer: _configuration["Token:Issuer"],
             expires: DateTime.UtcNow.AddDays(7),
+            notBefore: DateTime.Now,
             signingCredentials: signingCredentials
         );
         JwtSecurityTokenHandler tokenHandler = new();
         storefrontTokenDto.AccessToken = tokenHandler.WriteToken(securityToken);
+        storefrontTokenDto.RefreshToken = CreateRefreshToken();
         return storefrontTokenDto;
+    }
+
+    public string CreateRefreshToken()
+    {
+        byte[] number = new byte[32];
+        using RandomNumberGenerator randomNumberGenerator = RandomNumberGenerator.Create();
+        randomNumberGenerator.GetBytes(number);
+        return Convert.ToBase64String(number);
+    }
+
+    public async Task UpdateRefreshToken(string refreshToken, AppUser appUser,DateTime accessTokenExpire)
+    {
+        if (appUser != null)
+        {
+            appUser.RefreshToken = refreshToken;
+            appUser.RefreshTokenEndTime = accessTokenExpire.AddSeconds(1000);
+            await _userManager.UpdateAsync(appUser);
+        }
+        else
+        {
+            throw new ApplicationException("Kullanıcı bulunamadı");   
+        }
     }
 }
