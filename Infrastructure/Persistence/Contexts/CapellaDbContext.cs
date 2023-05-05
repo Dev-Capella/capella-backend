@@ -456,9 +456,9 @@ namespace Persistence.Contexts
                 {
                     Id = 10,
                     Code = "carousel_back",
-                    Name = "1920x540",
-                    Height = 540,
-                    Width = 1920,
+                    Name = "1300X470",
+                    Height = 470,
+                    Width = 1300,
                     MediaFormatType = MediaFormatType.CAROUSELBANNER,
                     CreatedDate = DateTime.UtcNow,
                     LastModifiedDate = DateTime.UtcNow
@@ -466,11 +466,11 @@ namespace Persistence.Contexts
                 new MediaFormat
                 {
                     Id = 11,
-                    Code = "carousel_front",
-                    Name = "672x378",
-                    Height = 378,
-                    Width = 672,
-                    MediaFormatType = MediaFormatType.CAROUSELBANNER,
+                    Code = "card",
+                    Name = "400X200",
+                    Height = 200,
+                    Width = 400,
+                    MediaFormatType = MediaFormatType.CARDBANNER,
                     CreatedDate = DateTime.UtcNow,
                     LastModifiedDate = DateTime.UtcNow
                 }
