@@ -14,5 +14,6 @@ namespace Application.Services.Banner
         Task Update(BannerDto bannerDto);
         Task Delete(string code);
         Task<List<BannerDto>> GetAllBanners();
+        Task<List<BannerDto>> GetActiveBanners();
     }
 }

@@ -49,6 +49,13 @@ namespace Persistence.Services
             return bannerDto;
         }
 
+        public async Task<List<BannerDto>> GetActiveBanners()
+        {
+            var activeBanners = await _bannerReadRepository.GetWhere(x => x.Active == true).ToListAsync();
+            var bannerDto = _mapper.Map<List<BannerDto>>(activeBanners);
+            return bannerDto;
+        }
+
         public async Task<BannerDto> GetBannerByCode(string code)
         {
             var banner = await _bannerReadRepository.GetWhere(x => x.Code == code)
