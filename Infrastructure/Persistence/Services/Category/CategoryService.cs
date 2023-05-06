@@ -66,6 +66,7 @@ namespace Persistence.Services
                              Name = c.Name,
                              Level = c.Level,
                              Description = c.Description,
+                             Slug = c.Slug
                          },
                          children = GetChildren(c.SubCategories, c.Id, (c.Level - 1).ToString())
                      })
@@ -90,6 +91,7 @@ namespace Persistence.Services
                             Name = c.Name,
                             Level = c.Level,
                             Description = c.Description,
+                            Slug = c.Slug
                         },
                         children = GetChildren(c.SubCategories, c.Id,key+"-"+ (c.Level - 1).ToString())
                     })

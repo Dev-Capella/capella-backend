@@ -18,6 +18,8 @@ namespace Domain.Entities
         public Category? ParentCategory { get; set; }
         public int? ParentCategoryId { get; set; }
         public int Level { get; set; }
+
+        public string Slug { get; set; }
         public ICollection<Category>? SubCategories { get; set; }
         public ICollection<Product> Products { get; set; }
 

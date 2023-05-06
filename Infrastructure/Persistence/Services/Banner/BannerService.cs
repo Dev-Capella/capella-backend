@@ -53,7 +53,8 @@ namespace Persistence.Services
         {
             var activeBanners = await _bannerReadRepository.GetWhere(x => x.Active == true).Include(x=> x.Gallery)
                 .ThenInclude(gallery => gallery.Medias)
-                .ThenInclude((medias => medias.MediaFormat)).ToListAsync();
+                .ThenInclude((medias => medias.MediaFormat))
+                .ToListAsync();
             var bannerDto = _mapper.Map<List<BannerDto>>(activeBanners);
             return bannerDto;
         }

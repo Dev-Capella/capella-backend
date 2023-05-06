@@ -13,6 +13,8 @@ namespace Application.DataTransferObject
         public string? Name { get; set; }
         public string? Description { get; set; }
         public int? Level { get; set; }
+
+        public string Slug { get; set; }
         public CategoryDto? ParentCategory { get; set; }
        
     }
