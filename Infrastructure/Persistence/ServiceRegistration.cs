@@ -19,12 +19,14 @@ using System.Text;
 using System.Threading.Tasks;
 using Application.Services.Authenticate;
 using Application.Services.Customer;
+using Application.Services.FileImport;
 using Application.Services.Mail;
 using Domain.Entities.Identity;
 using Infrastructure.Services;
 using Microsoft.AspNetCore.Identity;
 using Persistence.Services.Authenticate;
 using Persistence.Services.Customer;
+using Persistence.Services.FileImport;
 
 namespace Persistence
 {
@@ -114,7 +116,7 @@ namespace Persistence
             services.AddScoped<IMailService, MailService>();
             services.AddScoped<ICustomerService, CustomerService>();
             services.AddScoped<IAuthenticateService, AuthenticateService>();
-
+            services.AddScoped<IFileImportService, FileImportService>();
             #endregion
 
 

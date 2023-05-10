@@ -100,6 +100,7 @@ app.UseHangfireServer(new BackgroundJobServerOptions
     WorkerCount = Environment.ProcessorCount * 5
 });
 RecurringJobs.MediaDeleteOperation();
+RecurringJobs.ImportCsvFileListenerOperation();
 app.Run();
 
 
