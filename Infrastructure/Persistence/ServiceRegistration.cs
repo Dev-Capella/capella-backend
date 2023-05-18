@@ -20,13 +20,18 @@ using System.Threading.Tasks;
 using Application.Services.Authenticate;
 using Application.Services.Customer;
 using Application.Services.FileImport;
+using Application.Services.ImportData;
 using Application.Services.Mail;
+using Application.Services.Search;
+using Domain.Entities.Common;
 using Domain.Entities.Identity;
 using Infrastructure.Services;
 using Microsoft.AspNetCore.Identity;
 using Persistence.Services.Authenticate;
 using Persistence.Services.Customer;
 using Persistence.Services.FileImport;
+using Persistence.Services.ImportData;
+using Persistence.Services.Search;
 
 namespace Persistence
 {
@@ -117,6 +122,8 @@ namespace Persistence
             services.AddScoped<ICustomerService, CustomerService>();
             services.AddScoped<IAuthenticateService, AuthenticateService>();
             services.AddScoped<IFileImportService, FileImportService>();
+            services.AddScoped<IImportDataService, ImportDataService>();
+            services.AddScoped<ISearchService, SearchService>();
             #endregion
 
 

@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using AutoMapper.Internal;
 
 namespace Persistence.Repositories
 {
@@ -117,7 +118,7 @@ namespace Persistence.Repositories
             await _context.SaveChangesAsync();
             return model;
         }
-
+        
         public async Task<T> UpdateAsyncWithModel(T model, int id)
         {
             try

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Application.Repositories
 {
-    public interface IWriteRepository<T>: IRepository<T> where T :BaseEntity,ItemEntity
+    public interface IWriteRepository<T>: IRepository<T> where T :BaseEntity, ItemEntity
     {
         Task AddAsync(T model);
         Task RemoveAsync(T model);
