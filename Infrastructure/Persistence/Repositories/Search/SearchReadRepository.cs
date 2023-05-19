@@ -1,3 +1,8 @@
+using System.Data;
+using System.Data.Common;
+using System.Dynamic;
+using System.Reflection;
+using System.Reflection.Emit;
 using System.Text;
 using Application.Repositories.Search;
 using Domain.Entities.Common;
@@ -18,10 +23,11 @@ public class SearchReadRepository : ISearchReadRepository
     
     public int SearchSingleResult(Type tableClass, Dictionary<string, object> parameters, SearchOperator searchOperator)
     {
-        var query = CreateQuery(tableClass, parameters, searchOperator);
+       // var query = CreateQuery(tableClass, parameters, searchOperator);
         try
         {
-            return _capellaDbContext.Database.ExecuteSqlRaw(query);
+            List<dynamic> results = DynamicListFromSql(_capellaDbContext, "select * from capella.\"MediaFormats\"", new Dictionary<string, object> {}).ToList();
+            return 1;
         }
         catch (ApplicationException e)
         {
@@ -82,5 +88,36 @@ public class SearchReadRepository : ISearchReadRepository
         }
 
         return queryBuilder.ToString();
+    }
+
+
+    private static IEnumerable<dynamic> DynamicListFromSql(CapellaDbContext db, string Sql, Dictionary<string, object> Params)
+    {
+        using (var cmd = db.Database.GetDbConnection().CreateCommand())
+        {
+            cmd.CommandText = Sql;
+            if (cmd.Connection.State != ConnectionState.Open) { cmd.Connection.Open(); }
+
+            foreach (KeyValuePair<string, object> p in Params)
+            {
+                DbParameter dbParameter = cmd.CreateParameter();
+                dbParameter.ParameterName = p.Key;
+                dbParameter.Value = p.Value;
+                cmd.Parameters.Add(dbParameter);
+            }
+
+            using (var dataReader = cmd.ExecuteReader())
+            {
+                while (dataReader.Read())
+                {
+                    var row = new ExpandoObject() as IDictionary<string, object>;
+                    for (var fieldCount = 0; fieldCount < dataReader.FieldCount; fieldCount++)
+                    {
+                        row.Add(dataReader.GetName(fieldCount), dataReader[fieldCount]);
+                    }
+                    yield return row;
+                }
+            }
+        }
     }
 }

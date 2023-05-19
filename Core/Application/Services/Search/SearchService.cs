@@ -6,6 +6,5 @@ namespace Application.Services.Search;
 
 public interface ISearchService
 {
-    T SearchSingleResult<T>(Type tableClass, Dictionary<string, object> parameters, SearchOperator searchOperator)
-        where T : BaseEntity;
+    int SearchSingleResult(Type tableClass, Dictionary<string, object> parameters, SearchOperator searchOperator);
 }
