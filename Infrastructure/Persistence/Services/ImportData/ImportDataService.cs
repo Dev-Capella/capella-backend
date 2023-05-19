@@ -1,5 +1,6 @@
 using System.ComponentModel;
 using System.Reflection;
+using Application.Constant;
 using Application.Repositories;
 using Application.Services.ImportData;
 using Application.Services.Search;
@@ -85,7 +86,7 @@ public class ImportDataService: IImportDataService
                 try
                 {
                     // BURADA YAPILACAK KOD...
-                    baseEntity = _searchService.SearchSingleResult<>(itemType, uniqueMapForQuery, SearchOperator.AND);
+                    var a = _searchService.SearchSingleResult(itemType, uniqueMapForQuery, SearchOperator.AND);
 
 
                 }
@@ -190,6 +191,7 @@ public class ImportDataService: IImportDataService
             return value;
     }
 }
+    
     
     
 }

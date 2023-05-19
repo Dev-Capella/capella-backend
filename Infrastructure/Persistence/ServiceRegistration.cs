@@ -17,6 +17,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Application.Repositories.Search;
 using Application.Services.Authenticate;
 using Application.Services.Customer;
 using Application.Services.FileImport;
@@ -27,6 +28,7 @@ using Domain.Entities.Common;
 using Domain.Entities.Identity;
 using Infrastructure.Services;
 using Microsoft.AspNetCore.Identity;
+using Persistence.Repositories.Search;
 using Persistence.Services.Authenticate;
 using Persistence.Services.Customer;
 using Persistence.Services.FileImport;
@@ -95,6 +97,7 @@ namespace Persistence
             services.AddScoped<IGalleryWriteRepository, GalleryWriteRepository>();
             services.AddScoped<ICustomerReadRepository, CustomerReadRepository>();
             services.AddScoped<ICustomerWriteRepository, CustomerWriteRepository>();
+            services.AddScoped<ISearchReadRepository, SearchReadRepository>();
             #endregion
 
             #region Service Registration
