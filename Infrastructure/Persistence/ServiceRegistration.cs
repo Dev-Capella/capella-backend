@@ -20,12 +20,12 @@ using System.Threading.Tasks;
 using Application.Services.Authenticate;
 using Application.Services.Customer;
 using Application.Services.Mail;
+using Domain.Entities.Common;
 using Domain.Entities.Identity;
 using Infrastructure.Services;
 using Microsoft.AspNetCore.Identity;
 using Persistence.Services.Authenticate;
 using Persistence.Services.Customer;
-
 namespace Persistence
 {
     public static class ServiceRegistration
@@ -114,7 +114,6 @@ namespace Persistence
             services.AddScoped<IMailService, MailService>();
             services.AddScoped<ICustomerService, CustomerService>();
             services.AddScoped<IAuthenticateService, AuthenticateService>();
-
             #endregion
 
 

@@ -10,4 +10,5 @@ public static class RecurringJobs
         RecurringJob.AddOrUpdate<ClearMediaCronJob>(nameof(ClearMediaCronJob),
             job => job.Run(),"0 0 * * *", TimeZoneInfo.Local);
     }
+    
 }

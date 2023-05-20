@@ -61,7 +61,7 @@ namespace Persistence.Contexts
 
             return base.SaveChangesAsync(cancellationToken);
         }
-
+        
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder
@@ -222,6 +222,7 @@ namespace Persistence.Contexts
                 Description = "Giyim",
                 ParentCategory = null,
                 Level = 1,
+                Slug = "category-1",
                 CreatedDate = DateTime.UtcNow,
                 LastModifiedDate = DateTime.UtcNow
             };
@@ -236,6 +237,7 @@ namespace Persistence.Contexts
                     Description = "Erkek",
                     ParentCategoryId = 1,
                     Level = 1,
+                    Slug = "category-2",
                     CreatedDate = DateTime.UtcNow,
                     LastModifiedDate = DateTime.UtcNow
                 },
@@ -247,6 +249,7 @@ namespace Persistence.Contexts
                     Description = "Kadın",
                     ParentCategoryId = 1,
                     Level = 2,
+                    Slug = "category-3",
                     CreatedDate = DateTime.UtcNow,
                     LastModifiedDate = DateTime.UtcNow
                 }
