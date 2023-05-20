@@ -1,7 +1,8 @@
-using Application.Services.FileImport;
-using Microsoft.Extensions.Configuration;
 
-namespace Infrastructure.BackgroundJob.Jobs;
+
+using DataIntegrationAPI.Service.Abstract;
+
+namespace DataIntegrationAPI.Jobs;
 
 public class ImportCsvFiles
 {

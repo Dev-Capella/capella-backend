@@ -1,4 +1,4 @@
-namespace Domain.Enums;
+namespace DataIntegrationAPI.Enums;
 
 public enum ImportProcessType
 {

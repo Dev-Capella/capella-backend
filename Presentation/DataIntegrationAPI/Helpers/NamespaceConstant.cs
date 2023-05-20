@@ -1,4 +1,4 @@
-namespace Application.Constant;
+namespace DataIntegrationAPI.Helpers;
 
 public static class NamespaceConstant
 {

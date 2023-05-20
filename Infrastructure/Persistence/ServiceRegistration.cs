@@ -17,24 +17,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Application.Repositories.Search;
 using Application.Services.Authenticate;
 using Application.Services.Customer;
-using Application.Services.FileImport;
-using Application.Services.ImportData;
 using Application.Services.Mail;
-using Application.Services.Search;
 using Domain.Entities.Common;
 using Domain.Entities.Identity;
 using Infrastructure.Services;
 using Microsoft.AspNetCore.Identity;
-using Persistence.Repositories.Search;
 using Persistence.Services.Authenticate;
 using Persistence.Services.Customer;
-using Persistence.Services.FileImport;
-using Persistence.Services.ImportData;
-using Persistence.Services.Search;
-
 namespace Persistence
 {
     public static class ServiceRegistration
@@ -97,7 +88,6 @@ namespace Persistence
             services.AddScoped<IGalleryWriteRepository, GalleryWriteRepository>();
             services.AddScoped<ICustomerReadRepository, CustomerReadRepository>();
             services.AddScoped<ICustomerWriteRepository, CustomerWriteRepository>();
-            services.AddScoped<ISearchReadRepository, SearchReadRepository>();
             #endregion
 
             #region Service Registration
@@ -124,9 +114,6 @@ namespace Persistence
             services.AddScoped<IMailService, MailService>();
             services.AddScoped<ICustomerService, CustomerService>();
             services.AddScoped<IAuthenticateService, AuthenticateService>();
-            services.AddScoped<IFileImportService, FileImportService>();
-            services.AddScoped<IImportDataService, ImportDataService>();
-            services.AddScoped<ISearchService, SearchService>();
             #endregion
 
 

@@ -1,6 +1,8 @@
-using Domain.Enums;
 
-namespace Application.Services.ImportData;
+
+using DataIntegrationAPI.Enums;
+
+namespace DataIntegrationAPI.Service.Abstract;
 
 public interface IImportDataService
 {

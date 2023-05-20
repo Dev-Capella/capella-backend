@@ -1,17 +1,10 @@
+using DataIntegrationAPI.Enums;
+using DataIntegrationAPI.Repository.Abstract;
+using DataIntegrationAPI.Service.Abstract;
 using System.ComponentModel;
 using System.Reflection;
-using Application.Constant;
-using Application.Repositories;
-using Application.Services.ImportData;
-using Application.Services.Search;
-using Domain.Entities;
-using Domain.Entities.Common;
-using Domain.Enums;
-using Persistence.Contexts;
-using Persistence.Repositories;
-using Persistence.Services.Search;
 
-namespace Persistence.Services.ImportData;
+namespace DataIntegrationAPI.Service.Concrete;
 
 public class ImportDataService: IImportDataService
 {
@@ -20,11 +13,12 @@ public class ImportDataService: IImportDataService
     private static readonly string COLON = ":";
     private static readonly string SEMI_COLON = ";";
 
-    private readonly ISearchService _searchService;
-
-    public ImportDataService(ISearchService searchService)
+    private readonly IQueryService _queryService;
+    private readonly IRepository _repository;
+    public ImportDataService(IQueryService queryService, IRepository repository)
     {
-        _searchService = searchService;
+        _queryService = queryService;
+        _repository = repository;
     }
 
     public Task<(bool, string)> ImportData(Type itemType, List<Dictionary<string, object>> data, ImportProcessType importProcessType)
@@ -33,15 +27,16 @@ public class ImportDataService: IImportDataService
         {
             foreach (var row in data)
             {
+                var uniqueMapForQuery = new Dictionary<string, object>();
                 foreach (var rowValue in row)
                 {
                     row[rowValue.Key] = rowValue.Value.ToString().Trim();
                 }
 
-                BaseEntity baseEntity;
                 var uniqueFields = row.Keys.Where(p => p.Contains(UNIQUE_POINTER)).ToHashSet();
-                var uniqueMapForQuery = new Dictionary<string, object>();
+                
                 var tempObj = Activator.CreateInstance(itemType);
+
                 foreach (var uniqueField in uniqueFields)
                 {
                     if (uniqueField.Contains("("))
@@ -85,22 +80,35 @@ public class ImportDataService: IImportDataService
 
                 try
                 {
-                    // BURADA YAPILACAK KOD...
-                    var a = _searchService.SearchSingleResult(itemType, uniqueMapForQuery, SearchOperator.AND);
-
-
+                    var query = _queryService.SelectQuery(itemType.Name, uniqueMapForQuery, SearchOperator.AND);
+                    var model = _repository.Get(query);
+                    if (model.Count() > 0)
+                    {
+                        throw new Exception();
+                    }
+                    
                 }
-                catch (Exception e)
+                catch (Exception ex)
                 {
-                    Console.WriteLine(e);
                     throw;
                 }
-                return Task.FromResult((true, ""));
-                
-                
-                
-            }
+               
 
+
+
+            }
+            //try
+            //{
+            //    // BURADA YAPILACAK KOD...
+            //    var a = _searchService.SearchSingleResult(itemType, uniqueMapForQuery, SearchOperator.AND);
+
+
+            //}
+            //catch (Exception e)
+            //{
+            //    Console.WriteLine(e);
+            //    throw;
+            //}
             return Task.FromResult((true, ""));
         }
         catch (Exception e)

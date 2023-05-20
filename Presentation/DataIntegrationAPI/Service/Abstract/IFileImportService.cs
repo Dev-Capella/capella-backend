@@ -1,4 +1,4 @@
-namespace Application.Services.FileImport;
+namespace DataIntegrationAPI.Service.Abstract;
 
 public interface IFileImportService
 { 

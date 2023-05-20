@@ -1,13 +1,11 @@
+using CsvHelper;
+using DataIntegrationAPI.Enums;
+using DataIntegrationAPI.Helpers;
+using DataIntegrationAPI.Service.Abstract;
 using System.Globalization;
 using System.Text;
-using Application.Constant;
-using Application.Helpers;
-using Application.Services.FileImport;
-using Application.Services.ImportData;
-using CsvHelper;
-using Domain.Enums;
 
-namespace Persistence.Services.FileImport;
+namespace DataIntegrationAPI.Service.Concrete;
 
 public class FileImportService: IFileImportService
 {
