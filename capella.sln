@@ -21,8 +21,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "API", "Presentation\API\API
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StorefrontAPI", "Presentation\StorefrontAPI\StorefrontAPI.csproj", "{441AF2CB-C9AD-4040-9A3A-A3A00B48DF0F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataIntegrationAPI", "Presentation\DataIntegrationAPI\DataIntegrationAPI.csproj", "{82849941-9454-46BC-818D-6CE028493293}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -53,10 +51,6 @@ Global
 		{441AF2CB-C9AD-4040-9A3A-A3A00B48DF0F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{441AF2CB-C9AD-4040-9A3A-A3A00B48DF0F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{441AF2CB-C9AD-4040-9A3A-A3A00B48DF0F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{82849941-9454-46BC-818D-6CE028493293}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{82849941-9454-46BC-818D-6CE028493293}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{82849941-9454-46BC-818D-6CE028493293}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{82849941-9454-46BC-818D-6CE028493293}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -68,7 +62,6 @@ Global
 		{761E4B96-43B1-44B0-B04D-1B82461B5153} = {AAF8A44C-8C9D-4408-B28A-5F3E72080E5F}
 		{9545C960-421E-41FE-B716-A9DB11534A4F} = {40F65A48-6B26-4EA9-9CCB-B2FCC30C528B}
 		{441AF2CB-C9AD-4040-9A3A-A3A00B48DF0F} = {40F65A48-6B26-4EA9-9CCB-B2FCC30C528B}
-		{82849941-9454-46BC-818D-6CE028493293} = {40F65A48-6B26-4EA9-9CCB-B2FCC30C528B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {AA4CDFF1-6B3A-49F4-A27E-5F1FC25263AF}
