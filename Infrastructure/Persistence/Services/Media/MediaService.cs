@@ -2,11 +2,13 @@
 using Application.DataTransferObject;
 using Application.Repositories;
 using Application.Services;
+using AutoMapper;
 using Domain.Entities;
 using Domain.Enums;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Persistence.Repositories;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Formats;
 using SixLabors.ImageSharp.Formats.Bmp;
@@ -29,12 +31,19 @@ namespace Persistence.Services
         private readonly IGalleryWriteRepository _galleryWriteRepository;
         private readonly IGalleryReadRepository _galleryReadRepository;
         private readonly IMediaFormatReadRepository _mediaFormatReadRepository;
-        public MediaService(IConfiguration config, 
+        private readonly IContentCategoryReadRepository _contentCategoryReadRepository; 
+        private readonly IMapper _mapper;
+        public MediaService(
+            IContentCategoryReadRepository contentCategoryReadRepository,
+            IMapper mapper,
+            IConfiguration config, 
             IMediaWriteRepository mediaWriteRepository, 
             IMediaFormatReadRepository mediaFormatReadRepository,
             IGalleryWriteRepository galleryWriteRepository,
             IGalleryReadRepository galleryReadRepository)
         {
+            _contentCategoryReadRepository = contentCategoryReadRepository;
+            _mapper = mapper;
             _config = config;
             _mediaWriteRepository = mediaWriteRepository;
             _mediaFormatReadRepository = mediaFormatReadRepository;
@@ -276,6 +285,59 @@ namespace Persistence.Services
         {
             var servePath = _config["MediaStorage:ServePath"];
             return String.Concat(servePath, url);
+        }
+
+        public async Task<List<MediaDto>> Save(List<IFormFile> formfiles, string contentCategoryCode, bool secure)
+        {
+            try
+            {
+                var todayDate = DateTime.Now.ToString("yyyyMMdd");
+                var todayTime = DateTime.Now.ToString("HHmmss");
+                var rootPath = _config["MediaStorage:FileRootPath"];
+                var isSecure = secure ? _config["MediaStorage:SecurePath"] : _config["MediaStorage:PublicPath"];
+                var filePath = $"{isSecure}capella/{todayDate}/{todayTime}";
+                var fullPath = $"{rootPath}/{filePath}";
+                var filenamehash = new string(Enumerable.Repeat(chars, 20).Select(s => s[random.Next(s.Length)]).ToArray());
+
+                Directory.CreateDirectory(fullPath);
+                List<Media> medias = new List<Media>();
+
+                
+                var contentCategory = await _contentCategoryReadRepository.GetWhere(x => x.Code == contentCategoryCode).FirstOrDefaultAsync();
+                foreach (var formFile in formfiles)
+                {
+                    using (var stream = new FileStream(Path.Combine(fullPath, formFile.FileName), FileMode.Create))
+                    {
+                        await formFile.CopyToAsync(stream);
+                    }
+                    
+                    Media media = new();
+                    media.RealFilename = formFile.FileName;
+                    media.EncodedFilename = filenamehash;
+                    media.Extension = Path.GetExtension(formFile.FileName);
+                    media.FilePath = filePath;
+                    media.RootPath = rootPath;
+                    media.Size = formFile.Length;
+                    media.Mime = formFile.ContentType;
+                    media.Secure = secure;
+                    var absolutePath = $"{filePath}/{filenamehash}{Path.GetExtension(formFile.FileName)}";
+                    media.AbsolutePath = absolutePath;
+                    media.ServePath = absolutePath;
+                    media.Code = Guid.NewGuid().ToString();
+                    media.ContentCategory = contentCategory;
+                    await _mediaWriteRepository.AddAsync(media);
+                    medias.Add(media);
+                }
+
+                var mapMedias = _mapper.Map<List<MediaDto>>(medias);
+                return mapMedias;
+
+            }
+            catch (IOException exception)
+            {
+
+                throw exception;
+            }
         }
     }
 

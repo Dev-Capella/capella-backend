@@ -13,6 +13,7 @@ namespace Application.Services
 {
     public interface IMediaService
     {
+        Task<List<MediaDto>> Save(List<IFormFile> formfiles, string contentCategoryCode, bool secure);
         Task<Media> Storage(IFormFile formFile, bool secure);
 
         Task<Gallery> SaveGallery(IFormFile formFile, bool secure);

@@ -22,5 +22,6 @@ public class Media : CodeBaseEntity
     
     public int? MediaFormatId { get; set; }
     public ICollection<Product> Products { get; set; }
+    public ContentCategory ContentCategory { get; set; }
 
 }

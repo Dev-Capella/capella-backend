@@ -24,7 +24,7 @@ builder.Services.AddHangfire(configuration => configuration
     .SetDataCompatibilityLevel(CompatibilityLevel.Version_170)
     .UseSimpleAssemblyNameTypeSerializer()
     .UseRecommendedSerializerSettings()
-    .UsePostgreSqlStorage("User ID=postgres;Password=1234;Host=localhost;Port=5432;Database=hangfiredb"));
+    .UsePostgreSqlStorage("User ID=postgres;Password=1436;Host=localhost;Port=5432;Database=hangfiredb"));
 builder.Services.AddControllers();
 
 //Authentication
@@ -37,9 +37,7 @@ builder.Services.AddSwaggerGen();
 //Automapper
 var mappingConfig = new MapperConfiguration(mc =>
 {
-    mc.AddProfile(new MappingProfile(
-        builder.Services.BuildServiceProvider().GetRequiredService<IMediaService>()
-    ));
+    mc.AddProfile(new MappingProfile());
 });
 IMapper mapper = mappingConfig.CreateMapper();
 builder.Services.AddSingleton(mapper);

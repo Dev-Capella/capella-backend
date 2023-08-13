@@ -12,10 +12,10 @@ namespace Application.Mapping
 {
     public class MappingProfile : Profile
     {
-        private readonly IMediaService _mediaService;
-        public MappingProfile(IMediaService mediaService)
+   
+        public MappingProfile()
         {
-            _mediaService = mediaService;
+           
             #region Product Mapper
 
             CreateMap<Product, ProductListDto>()
@@ -79,9 +79,7 @@ namespace Application.Mapping
             #endregion
 
             #region Media Mapper
-            CreateMap<Media, MediaDto>()
-                  .ForMember(dest => dest.AbsolutePath, opt => opt.MapFrom(src => _mediaService.GenerateMediaUrl(src.AbsolutePath)))
-                .ReverseMap();
+            CreateMap<Media, MediaDto>().ReverseMap();
             #endregion
 
             #region Gallery Mapper
@@ -149,6 +147,10 @@ namespace Application.Mapping
 
             #region Banner Mapper
             CreateMap<Banner, BannerDto>().ReverseMap();
+            #endregion
+
+            #region ContentCategory Mapper
+            CreateMap<ContentCategory, ContentCategoryDto>().ReverseMap();
             #endregion
 
         }

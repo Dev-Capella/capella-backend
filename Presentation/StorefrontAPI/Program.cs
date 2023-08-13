@@ -18,9 +18,7 @@ builder.Services.AddSwaggerGen();
 //Automapper
 var mappingConfig = new MapperConfiguration(mc =>
 {
-    mc.AddProfile(new MappingProfile(
-        builder.Services.BuildServiceProvider().GetRequiredService<IMediaService>()
-    ));
+    mc.AddProfile(new MappingProfile());
 });
 IMapper mapper = mappingConfig.CreateMapper();
 builder.Services.AddSingleton(mapper);

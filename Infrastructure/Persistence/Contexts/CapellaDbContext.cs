@@ -34,6 +34,8 @@ namespace Persistence.Contexts
         public DbSet<District> Districts { get; set; }
         public DbSet<Warehouse> Warehouses { get; set; }
         public DbSet<Banner> Banners { get; set; }
+        public DbSet<ContentCategory> ContentCategories { get; set; }
+
 
         public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {
@@ -186,6 +188,9 @@ namespace Persistence.Contexts
                 .HasOne(m => m.MediaFormat)
                 .WithMany(mf => mf.Medias)
                 .IsRequired(false);
+            modelBuilder.Entity<Media>()
+                .HasOne(m => m.ContentCategory)
+                .WithMany(cc => cc.Medias);
 
             modelBuilder.Entity<Brand>().HasData(
                 new Brand
